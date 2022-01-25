@@ -1,0 +1,23 @@
+{
+  "name": "postpress",
+  "version": "1.0.0",
+  "description": "1. [Database](./docs/database.md) 2. Routes    1. [User](./docs/user-routes.md)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bmviniciuss/postpress.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bmviniciuss/postpress/issues"
+  },
+  "homepage": "https://github.com/bmviniciuss/postpress#readme"
+}
