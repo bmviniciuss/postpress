@@ -1,26 +1,19 @@
 import { PrismaClient } from '@prisma/client'
-import express from 'express'
 import swaggerUi from 'swagger-ui-express'
 
 import { PORT } from '../../../config/env'
+import { makeExpressServer } from './config/makeExpressServer'
 import apiSchema from './docs/api-schema.json'
-import { makeLoginRouter } from './routes/login'
 
 async function bootstrap () {
   const prisma = new PrismaClient()
-  const app = express()
+  const app = makeExpressServer(prisma)
 
-  app.use(express.json())
-
-  app.get('/', (req, res) => {
-    return res.send({ hello: 'World' })
-  })
-
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSchema, {
-    explorer: true
-  }))
-
-  app.use(makeLoginRouter(prisma))
+  if (process.env.NODE_ENV !== 'test') {
+    app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSchema, {
+      explorer: true
+    }))
+  }
 
   app.listen({ port: PORT }, () => {
     console.log(`🚀 Server ready at http://localhost:${PORT}`)
