@@ -42,6 +42,7 @@
     "git-commit-msg-linter": "^4.0.7",
     "husky": "^7.0.4",
     "jest": "^27.4.7",
+    "jest-mock-extended": "^2.0.4",
     "lint-staged": "^12.3.1",
     "prisma": "^3.8.1",
     "rimraf": "^3.0.2",
