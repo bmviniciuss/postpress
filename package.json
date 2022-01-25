@@ -20,7 +20,7 @@
     "test:docker:down": "docker-compose -f ./tests/docker-compose.yml down",
     "test:prepare:integration": "dotenv -e .env.test -- npx prisma migrate deploy",
     "test:integration": "npm run test:prepare:integration && dotenv -e .env.test -- npm run test -- -c ./jest-integration.config.js",
-    "test:ci": "npx risma migrate deploy && npm run test -- --coverage",
+    "test:ci": "npx prisma migrate deploy && npm run test -- --coverage",
     "test:ci:local": "dotenv -e .env.test -- npm run test -- --coverage"
   },
   "repository": {
