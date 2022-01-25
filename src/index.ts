@@ -1,1 +1,1 @@
-console.log('Hello')
+import './shared/infra/http/app'

@@ -25,7 +25,9 @@ export class LoginUserController extends Controller {
   async execute (httpRequest: LoginUserControllerRequestDTO): Promise<HttpResponse<any>> {
     try {
       const validationError = this.validator.validate(httpRequest)
-      if (validationError) return badRequest(new LoginUserErrors.InvalidParamsError())
+      console.log('AQUIIIII\n\n\n\n', validationError)
+
+      if (validationError) return badRequest(validationError)
       const accessToken = await this.useCase.execute(httpRequest)
       return ok(accessToken)
     } catch (error) {
