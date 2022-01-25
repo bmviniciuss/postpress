@@ -1,35 +1,24 @@
 import { PrismaClient } from '@prisma/client'
-import Fastify from 'fastify'
-import fastifyBlipp from 'fastify-blipp'
+import express from 'express'
 
-import { makeAuthRoutes } from './routes/auth'
+import { PORT } from '../../../config/env'
+import { makeLoginRouter } from './routes/login'
 
 async function bootstrap () {
   const prisma = new PrismaClient()
+  const app = express()
 
-  const server = Fastify({
-    logger: true
+  app.use(express.json())
+
+  app.get('/', (req, res) => {
+    return res.send({ hello: 'World' })
   })
 
-  server.register(fastifyBlipp)
-  server.get('/', async (request, reply) => {
-    return 'Hello World'
+  app.use(makeLoginRouter(prisma))
+
+  app.listen({ port: PORT }, () => {
+    console.log(`🚀 Server ready at http://localhost:${PORT}`)
   })
-
-  server.register(makeAuthRoutes(prisma))
-
-  const start = async () => {
-    try {
-      await server.listen(3000)
-      server.blipp()
-    } catch (err) {
-      server.log.error(err)
-      console.error(err)
-      process.exit(1)
-    }
-  }
-
-  start()
 }
 
 bootstrap()
