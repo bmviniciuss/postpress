@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/bmviniciuss/postpress/issues"
   },
-  "homepage": "https://github.com/bmviniciuss/postpress#readme"
+  "homepage": "https://github.com/bmviniciuss/postpress#readme",
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  }
 }
