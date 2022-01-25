@@ -2,13 +2,13 @@ import { mock } from 'jest-mock-extended'
 
 import { Validator } from '../../../../../infra/validation/Validator'
 import { badRequest, ok, serverError } from '../../../../../shared/infra/http/http'
-import { LoginUserUseCase } from '../LoginUseCase'
+import { LoginUser } from '../LoginUse'
 import { LoginUserController, LoginUserControllerRequestDTO } from '../LoginUserController'
 import { LoginUserErrors } from '../LoginUserErrors'
 
 const makeSut = () => {
   const validatorMock = mock<Validator>()
-  const loginUserUseCaseMock = mock<LoginUserUseCase>()
+  const loginUserUseCaseMock = mock<LoginUser>()
 
   // golden path mocks
   validatorMock.validate.mockReturnValue(null)

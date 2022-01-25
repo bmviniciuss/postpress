@@ -7,6 +7,6 @@ export interface LoginUserReponseDTO {
   token: string
 }
 
-export interface LoginUserUseCase {
+export interface LoginUser {
   execute(data: LoginUserDTO): Promise<LoginUserReponseDTO>
 }

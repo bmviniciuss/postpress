@@ -2,7 +2,7 @@
 import { Validator } from '../../../../infra/validation/Validator'
 import { Controller } from '../../../../shared/infra/http/Controller'
 import { badRequest, HttpResponse, ok, serverError } from '../../../../shared/infra/http/http'
-import { LoginUserUseCase } from './LoginUseCase'
+import { LoginUser } from './LoginUse'
 import { LoginUserErrors } from './LoginUserErrors'
 
 export type LoginUserControllerRequestDTO = {
@@ -17,7 +17,7 @@ export type LoginUserControllerResponseDTO = {
 export class LoginUserController extends Controller {
   constructor (
     private readonly validator: Validator,
-    private readonly useCase: LoginUserUseCase
+    private readonly useCase: LoginUser
   ) {
     super()
   }
