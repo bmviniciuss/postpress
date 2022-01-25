@@ -1,0 +1,101 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "http://localhost:4000/",
+      "description": "Local server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "description": "Route for user authentication",
+        "operationId": "login",
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/loginUserInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User has successfully logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authTokenPayload"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "name": {
+        "type": "string",
+        "example": "John Doe"
+      },
+      "email": {
+        "type": "string",
+        "example": "john@mail.com"
+      },
+      "jwtToken": {
+        "type": "string",
+        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZWRmN2JkMi05MmE4LTRiZTMtODAzNy0zNWJkOGE1MzVmNzIiLCJpYXQiOjE2NDMxNDk5NTd9.-rs138keqT7i2AYemx8LjAZ1-ndzZScxtxwGrG7Iq0c"
+      },
+      "loginUserInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/name"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          }
+        }
+      },
+      "authTokenPayload": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "$ref": "#/components/schemas/jwtToken"
+          }
+        }
+      },
+      "errorPayload": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
