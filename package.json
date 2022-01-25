@@ -15,10 +15,13 @@
     "lint:staged": "lint-staged",
     "husky:prepare": "husky install",
     "test": "jest --passWithNoTests --runInBand",
+    "test:unit": "npm run test -- --watch -c ./jest-unit.config.js ",
     "test:docker:up": "docker-compose --env-file ./.env.test -f ./tests/docker-compose.yml up -d",
     "test:docker:down": "docker-compose -f ./tests/docker-compose.yml down",
     "test:prepare:integration": "dotenv -e .env.test -- npx prisma migrate deploy",
-    "test:integration": "npm run test:prepare:integration && dotenv -e .env.test -- npm run test -- -c ./jest-integration.config.js"
+    "test:integration": "npm run test:prepare:integration && dotenv -e .env.test -- npm run test -- -c ./jest-integration.config.js",
+    "test:ci": "npx risma migrate deploy && npm run test -- --coverage",
+    "test:ci:local": "dotenv -e .env.test -- npm run test -- --coverage"
   },
   "repository": {
     "type": "git",
