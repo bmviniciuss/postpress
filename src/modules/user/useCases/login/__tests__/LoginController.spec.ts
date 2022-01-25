@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended'
 
-import { Validator } from '../../../../../infra/validation/Validator'
 import { badRequest, ok, serverError } from '../../../../../shared/infra/http/http'
+import { Validator } from '../../../../../validation/Validator'
 import { LoginUser } from '../LoginUse'
 import { LoginUserController, LoginUserControllerRequestDTO } from '../LoginUserController'
 import { LoginUserErrors } from '../LoginUserErrors'

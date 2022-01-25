@@ -1,7 +1,7 @@
 
-import { Validator } from '../../../../infra/validation/Validator'
 import { Controller } from '../../../../shared/infra/http/Controller'
 import { badRequest, HttpResponse, ok, serverError } from '../../../../shared/infra/http/http'
+import { Validator } from '../../../../validation/Validator'
 import { LoginUser } from './LoginUse'
 import { LoginUserErrors } from './LoginUserErrors'
 
