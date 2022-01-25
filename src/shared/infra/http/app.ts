@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import express from 'express'
+import swaggerUi from 'swagger-ui-express'
 
 import { PORT } from '../../../config/env'
+import apiSchema from './docs/api-schema.json'
 import { makeLoginRouter } from './routes/login'
 
 async function bootstrap () {
@@ -13,6 +15,10 @@ async function bootstrap () {
   app.get('/', (req, res) => {
     return res.send({ hello: 'World' })
   })
+
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(apiSchema, {
+    explorer: true
+  }))
 
   app.use(makeLoginRouter(prisma))
 
