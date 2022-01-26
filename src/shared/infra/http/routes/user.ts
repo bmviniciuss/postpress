@@ -3,6 +3,8 @@ import { Router } from 'express'
 import Joi from 'joi'
 
 import { JoiValidatorAdapter } from '../../../../infra/adapters/validation/JoiValidationAdapter'
+import { GetUserController } from '../../../../modules/user/useCases/getUser/GetUserController'
+import { GetUserUseCase } from '../../../../modules/user/useCases/getUser/GetUserUseCase'
 import { GetUsersController } from '../../../../modules/user/useCases/getUsers/GetUsersController'
 import { GetUsersUseCase } from '../../../../modules/user/useCases/getUsers/GetUsersUseCase'
 import { RegisterUserController } from '../../../../modules/user/useCases/register/RegisterUserController'
@@ -34,11 +36,22 @@ export const makeGetUsersController = (prisma: PrismaClient) => {
   return new GetUsersController(getUsersUseCase)
 }
 
+export const makeGetUserController = (prisma: PrismaClient) => {
+  const userRepository = makePrismaUserRepository(prisma)
+  const getUserUseCase = new GetUserUseCase(userRepository)
+  return new GetUserController(getUserUseCase)
+}
+
 export const makeUsersRouter = (prisma: PrismaClient) => {
   const router = Router()
   router.post('/user', expressRouteAdapter(makeRegisterUserController(prisma)))
   router.get('/user',
     expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
-    expressAuthenticatedRouteAdapter(makeGetUsersController(prisma)))
+    expressAuthenticatedRouteAdapter(makeGetUsersController(prisma))
+  )
+  router.get('/user/:userId',
+    expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
+    expressAuthenticatedRouteAdapter(makeGetUserController(prisma))
+  )
   return router
 }
