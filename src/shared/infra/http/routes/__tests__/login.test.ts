@@ -28,10 +28,10 @@ describe('Login Routes', () => {
         .post('/login')
       expect(response.statusCode).toEqual(400)
       expect(response.body).toMatchInlineSnapshot(`
-        Object {
-          "message": "\\"email\\" is required",
-        }
-      `)
+Object {
+  "message": "Campos inválidos",
+}
+`)
     })
 
     it('should return 400 if no password is provided', async () => {
@@ -40,10 +40,10 @@ describe('Login Routes', () => {
         .send({ email: faker.internet.email() })
       expect(response.statusCode).toEqual(400)
       expect(response.body).toMatchInlineSnapshot(`
-        Object {
-          "message": "\\"password\\" is required",
-        }
-      `)
+Object {
+  "message": "Campos inválidos",
+}
+`)
     })
 
     it('should return 200 with token on success', async () => {
