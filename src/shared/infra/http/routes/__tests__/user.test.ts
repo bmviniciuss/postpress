@@ -201,4 +201,60 @@ describe('User Routes', () => {
       expect(response.body).toEqual(UserMapper.toPresentations([user, secondUser]))
     })
   })
+
+  describe('GET /user/:userId', () => {
+    const makeUrl = (userId: string) => {
+      return `/user/${userId}`
+    }
+
+    it('should return 401 if authentication is not provided', async () => {
+      const response = await request(app)
+        .get(makeUrl(faker.datatype.uuid()))
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token não encontrado",
+        }
+      `)
+    })
+
+    it('should return 401 if an invalid authentication is provided', async () => {
+      const response = await request(app)
+        .get(makeUrl(faker.datatype.uuid()))
+        .set('authorization', 'Bearer random')
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token expirado ou inválido",
+        }
+      `)
+    })
+
+    it('should return 404 if user does not exists', async () => {
+      const user = await buildAuthUser(userFactory(1), prisma)
+      const response = await request(app)
+        .get(makeUrl(faker.datatype.uuid()))
+        .set('authorization', `Bearer ${user.accessToken}`)
+        .send()
+      expect(response.statusCode).toEqual(404)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Usuário não existe",
+        }
+      `)
+    })
+
+    it('should return 200 with user', async () => {
+      const user = await buildAuthUser(userFactory(1), prisma)
+      const response = await request(app)
+        .get(makeUrl(user.id))
+        .set('authorization', `Bearer ${user.accessToken}`)
+        .send()
+      expect(response.statusCode).toEqual(200)
+      expect(response.body.id).toEqual(user.id)
+      expect(response.body.email).toEqual(user.email)
+    })
+  })
 })
