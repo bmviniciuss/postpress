@@ -9,6 +9,9 @@
   "tags": [
     {
       "name": "Authentication"
+    },
+    {
+      "name": "User"
     }
   ],
   "paths": {
@@ -53,30 +56,105 @@
           }
         }
       }
+    },
+    "/user": {
+      "post": {
+        "description": "Route for register a new user. On success the user is automatically logged in.",
+        "tags": ["User"],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registerUserInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Provided email is already in use",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "User created successfully and logged in with token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/authTokenPayload"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "name": {
-        "type": "string",
-        "example": "John Doe"
-      },
       "email": {
         "type": "string",
         "example": "john@mail.com"
+      },
+      "password": {
+        "type": "string",
+        "example": "super secret password"
+      },
+    
+      "displayName": {
+        "type": "string",
+        "example": "John Doe"
       },
       "jwtToken": {
         "type": "string",
         "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZWRmN2JkMi05MmE4LTRiZTMtODAzNy0zNWJkOGE1MzVmNzIiLCJpYXQiOjE2NDMxNDk5NTd9.-rs138keqT7i2AYemx8LjAZ1-ndzZScxtxwGrG7Iq0c"
       },
+      "image": {
+        "type": "string",
+        "example": "https://dummyimage.com/300x300/fff/aaa"
+      },
       "loginUserInput": {
         "type": "object",
         "properties": {
-          "name": {
-            "$ref": "#/components/schemas/name"
+          "password": {
+            "$ref": "#/components/schemas/password"
           },
           "email": {
             "$ref": "#/components/schemas/email"
+          }
+        }
+      },
+      "registerUserInput": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "$ref": "#/components/schemas/displayName"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "password": {
+            "$ref": "#/components/schemas/password"
+          },
+          "image": {
+            "$ref": "#/components/schemas/image"
           }
         }
       },
