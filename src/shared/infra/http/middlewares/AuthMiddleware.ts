@@ -5,14 +5,17 @@ import { AppErrors } from '../../../errors/AppErrors'
 import { HttpResponse, ok, unauthorized } from '../http'
 import { Middleware } from '../Middleware'
 
+export type AuthMidddlewareRequest = {
+  accessToken?: string
+}
 export class AuthMidddleware implements Middleware {
   constructor (
     private readonly jwt: JWT,
     private readonly userRepository: UserRepository
   ) { }
 
-  async handle (httpRequest: any): Promise<HttpResponse<any>> {
-    const { accessToken = '' } = httpRequest || {}
+  async handle (httpRequest: AuthMidddlewareRequest): Promise<HttpResponse<any>> {
+    const { accessToken = '' } = httpRequest
 
     if (accessToken) {
       const decodedToken = await this.jwt.decrypt(accessToken)
