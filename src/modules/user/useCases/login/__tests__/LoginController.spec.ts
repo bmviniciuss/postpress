@@ -41,7 +41,7 @@ describe('LoginController', () => {
     const { sut, validatorMock } = makeSut()
     validatorMock.validate.mockReturnValueOnce(new Error())
     const result = await sut.execute(params)
-    expect(result).toEqual(badRequest(new LoginUserErrors.InvalidParamsError()))
+    expect(result).toEqual(badRequest(new Error()))
   })
 
   it('should return 500 if Validator throws', async () => {

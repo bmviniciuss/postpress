@@ -29,7 +29,7 @@ describe('Login Routes', () => {
       expect(response.statusCode).toEqual(400)
       expect(response.body).toMatchInlineSnapshot(`
 Object {
-  "message": "Campos inválidos",
+  "message": "\\"email\\" is required",
 }
 `)
     })
@@ -41,7 +41,7 @@ Object {
       expect(response.statusCode).toEqual(400)
       expect(response.body).toMatchInlineSnapshot(`
 Object {
-  "message": "Campos inválidos",
+  "message": "\\"password\\" is required",
 }
 `)
     })
