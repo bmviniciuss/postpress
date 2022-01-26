@@ -3,8 +3,8 @@ import { User } from '@prisma/client'
 export interface RegisterUserDTO {
   email: string
   password: string
-  displayName?: string // at least 8 chars
-  image?: string
+  displayName: string | null // at least 8 chars
+  image: string | null
 }
 
 export interface RegisterUserReponseDTO {

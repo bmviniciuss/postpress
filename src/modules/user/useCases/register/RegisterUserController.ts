@@ -9,8 +9,8 @@ import { RegisterUserErrors } from './RegisterUserErrors'
 export type RegisterUserControllerRequestDTO = {
   email: string
   password: string
-  displayName?: string
-  image?: string
+  displayName: string | null
+  image: string | null
 }
 
 export type RegisterUserControllerResponseDTO = {

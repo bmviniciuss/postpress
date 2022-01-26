@@ -3,8 +3,8 @@ import { User } from '@prisma/client'
 export interface UserRepositoryRegisterDTO {
   email: string
   password: string
-  displayName?: string
-  image?: string
+  displayName: string | null
+  image: string | null
 }
 
 export interface UserRepository {

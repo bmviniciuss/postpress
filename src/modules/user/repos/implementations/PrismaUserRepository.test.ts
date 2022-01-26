@@ -51,4 +51,18 @@ describe('PrismaUserRepository', () => {
       expect(afterOperationUser?.accessToken).toEqual(token)
     })
   })
+
+  describe('register', () => {
+    it('should return a user on sucess', async () => {
+      const user = userFactory(1)
+      const created = await sut.register({
+        displayName: user.displayName,
+        email: user.email,
+        password: user.password,
+        image: user.image
+      })
+      expect(created).toBeDefined()
+      expect(created.email).toEqual(user.email)
+    })
+  })
 })

@@ -5,10 +5,6 @@ import { UserRepository, UserRepositoryRegisterDTO } from '../UserRepository'
 export class PrismaUserRepository implements UserRepository {
   constructor (private readonly prisma: PrismaClient) {}
 
-  register (data: UserRepositoryRegisterDTO): Promise<User> {
-    throw new Error('Method not implemented.')
-  }
-
   async loadByEmail (email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { email }
@@ -23,5 +19,11 @@ export class PrismaUserRepository implements UserRepository {
       data: { accessToken }
     })
     return !!user
+  }
+
+  register (data: UserRepositoryRegisterDTO): Promise<User> {
+    return this.prisma.user.create({
+      data
+    })
   }
 }
