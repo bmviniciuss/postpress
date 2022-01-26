@@ -13,4 +13,25 @@ export namespace AppErrors {
       this.stack = stack
     }
   }
+
+  export class UnauthorizedError extends Error {
+    constructor () {
+      super('Unauthorized')
+      this.name = 'AppErrors.UnauthorizedError'
+    }
+  }
+
+  export class TokenNotFoundError extends Error {
+    constructor () {
+      super('Token não encontrado')
+      this.name = 'AppErrors.TokenNotFound'
+    }
+  }
+
+  export class ExpiredOrInvalidTokenError extends Error {
+    constructor () {
+      super('Token expirado ou inválido')
+      this.name = 'AppErrors.ExpiredOrInvalidTokenError'
+    }
+  }
 }
