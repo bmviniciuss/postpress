@@ -1,6 +1,6 @@
 import { PrismaClient, User } from '@prisma/client'
 
-import { UserRepository } from '../UserRepository'
+import { UserRepository, UserRepositoryRegisterDTO } from '../UserRepository'
 
 export class PrismaUserRepository implements UserRepository {
   constructor (private readonly prisma: PrismaClient) {}
@@ -19,5 +19,11 @@ export class PrismaUserRepository implements UserRepository {
       data: { accessToken }
     })
     return !!user
+  }
+
+  register (data: UserRepositoryRegisterDTO): Promise<User> {
+    return this.prisma.user.create({
+      data
+    })
   }
 }

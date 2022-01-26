@@ -2,20 +2,14 @@ import { PrismaClient } from '@prisma/client'
 import { Router } from 'express'
 import Joi from 'joi'
 
-import { JWT_SECRET } from '../../../../config/env'
-import { BcryptAdapter } from '../../../../infra/adapters/cryptography/BcryptAdapter'
-import { JwtAdapter } from '../../../../infra/adapters/cryptography/JwtAdapter'
 import { JoiValidatorAdapter } from '../../../../infra/adapters/validation/JoiValidationAdapter'
-import { PrismaUserRepository } from '../../../../modules/user/repos/implementations/PrismaUserRepository'
 import { LoginUserController } from '../../../../modules/user/useCases/login/LoginUserController'
-import { LoginUserUseCase } from '../../../../modules/user/useCases/login/LoginUserUseCase'
 import { expressRouteAdapter } from '../../adapters/expressRouteAdapter'
+import { makeLoginUserUseCase } from '../../factories/useCases/user/makeLoginUserUseCase'
+import { Controller } from '../Controller'
 
-export const makeLoginUserController = (prisma: PrismaClient) => {
-  const prismaUserRepository = new PrismaUserRepository(prisma)
-  const bcryptAdapter = new BcryptAdapter()
-  const jwtAdapter = new JwtAdapter(JWT_SECRET)
-  const loginUserUseCase = new LoginUserUseCase(prismaUserRepository, bcryptAdapter, jwtAdapter)
+export const makeLoginUserController = (prisma: PrismaClient): Controller => {
+  const loginUserUseCase = makeLoginUserUseCase(prisma)
   const loginUserValidator = new JoiValidatorAdapter(Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required()
