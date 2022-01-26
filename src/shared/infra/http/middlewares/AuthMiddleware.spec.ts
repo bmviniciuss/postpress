@@ -24,8 +24,15 @@ function makeSut () {
 }
 
 const makeParams = (): AuthMidddlewareRequest => ({
-  accessToken: faker.datatype.uuid()
+  accessToken: `Bearer ${faker.datatype.uuid()}`
 })
+
+const getToken = (authorizationHeader = '') => {
+  if (!authorizationHeader) return null
+  const header = authorizationHeader.split('Bearer')
+  if (!header[1]) return null
+  return header[1].trim()
+}
 
 describe('AuthMiddleware', () => {
   let params: AuthMidddlewareRequest
@@ -40,10 +47,16 @@ describe('AuthMiddleware', () => {
     expect(result).toEqual(unauthorized(new AppErrors.TokenNotFoundError()))
   })
 
+  it('should return unauthorized with TokenNotFoundErrorif token does not have Bearer', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle({ accessToken: faker.datatype.uuid() })
+    expect(result).toEqual(unauthorized(new AppErrors.TokenNotFoundError()))
+  })
+
   it('should call Jwt.decrypt with correct value', async () => {
     const { sut, jwtMock } = makeSut()
     await sut.handle(params)
-    expect(jwtMock.decrypt).toHaveBeenCalledWith(params.accessToken)
+    expect(jwtMock.decrypt).toHaveBeenCalledWith(getToken(params.accessToken))
   })
 
   it('should return unauthorized with ExpiredOrInvalidTokenError if Jwt.decrypt resolves null', async () => {
@@ -56,7 +69,7 @@ describe('AuthMiddleware', () => {
   it('should call UserRepository.loadUserFromTokenAndId with correct value', async () => {
     const { sut, userRepositoryMock, jwtPayloadMock } = makeSut()
     await sut.handle(params)
-    expect(userRepositoryMock.loadUserFromTokenAndId).toHaveBeenCalledWith(jwtPayloadMock.sub, params.accessToken)
+    expect(userRepositoryMock.loadUserFromTokenAndId).toHaveBeenCalledWith(jwtPayloadMock.sub, getToken(params.accessToken))
   })
 
   it('should return unauthorized with ExpiredOrInvalidTokenError if UserRepository.loadUserFromTokenAndId returns null', async () => {

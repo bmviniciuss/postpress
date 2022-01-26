@@ -16,18 +16,26 @@ export class AuthMidddleware implements Middleware {
 
   async handle (httpRequest: AuthMidddlewareRequest): Promise<HttpResponse<any>> {
     const { accessToken = '' } = httpRequest
+    const token = this.getToken(accessToken)
 
-    if (accessToken) {
-      const decodedToken = await this.jwt.decrypt(accessToken)
+    if (token) {
+      const decodedToken = await this.jwt.decrypt(token)
       if (!decodedToken) return unauthorized(new AppErrors.ExpiredOrInvalidTokenError())
 
       const userId = decodedToken.sub
-      const authenticatedUser = await this.userRepository.loadUserFromTokenAndId(userId, accessToken)
+      const authenticatedUser = await this.userRepository.loadUserFromTokenAndId(userId, token)
       if (!authenticatedUser) return unauthorized(new AppErrors.ExpiredOrInvalidTokenError())
 
       return ok({ authenticatedUser })
     }
 
     return unauthorized(new AppErrors.TokenNotFoundError())
+  }
+
+  private getToken (authorizationHeader = '') {
+    if (!authorizationHeader) return null
+    const header = authorizationHeader.split('Bearer')
+    if (!header[1]) return null
+    return header[1].trim()
   }
 }
