@@ -75,4 +75,15 @@ describe('PrismaUserRepository', () => {
       expect(result).toEqual([users])
     })
   })
+
+  describe('loadUserFromTokenAndId', () => {
+    it('should return user with id and token', async () => {
+      const token = faker.datatype.uuid()
+      const user = await prisma.user.create({
+        data: userFactory(1, { accessToken: token })
+      })
+      const result = await sut.loadUserFromTokenAndId(user.id, token)
+      expect(result).toEqual(user)
+    })
+  })
 })
