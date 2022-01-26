@@ -65,4 +65,14 @@ describe('PrismaUserRepository', () => {
       expect(created.email).toEqual(user.email)
     })
   })
+
+  describe('listAll', () => {
+    it('should return all users', async () => {
+      const users = await prisma.user.create({ data: userFactory(1) })
+      const result = await sut.listAll()
+      expect(result).toBeDefined()
+      expect(result.length).toEqual(1)
+      expect(result).toEqual([users])
+    })
+  })
 })
