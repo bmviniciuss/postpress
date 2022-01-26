@@ -2,13 +2,15 @@ import { User } from '@prisma/client'
 
 import { AppErrors } from '../../errors/AppErrors'
 
-export interface HttpRequest<T = any> {
+export interface HttpRequest<T = any, P = any> {
   body?: T
+  params?:P
   authenticatedUser?: User
 }
 
-export interface HttpAuthenticatedRequest<T = any> {
+export interface HttpAuthenticatedRequest<T = any, P = any> {
   body?: T
+  params?:P
   authenticatedUser: User
 }
 

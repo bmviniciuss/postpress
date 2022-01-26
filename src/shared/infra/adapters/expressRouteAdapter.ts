@@ -8,6 +8,7 @@ export type ExpressRouteAdapter = (controller: Controller) => RequestHandler
 
 export const expressRouteAdapter: ExpressRouteAdapter = (controller: Controller) => {
   return async (req: Request, res: Response) => {
+    // TODO: add same input payload as expressAuthenticatedRouteAdapter
     const { statusCode, data } = await controller.handle(req.body)
 
     if (statusCode >= 200 && statusCode <= 299) {
@@ -28,12 +29,13 @@ export const expressAuthenticatedRouteAdapter: ExpressRouteAdapter = (controller
       })
     }
 
-    const body: HttpAuthenticatedRequest = {
+    const payload: HttpAuthenticatedRequest = {
+      params: req?.params ?? {},
       body: req.body,
       authenticatedUser: req.authenticatedUser
     }
 
-    const { statusCode, data } = await controller.handle(body)
+    const { statusCode, data } = await controller.handle(payload)
 
     if (statusCode >= 200 && statusCode <= 299) {
       return res.status(statusCode).json(data)
