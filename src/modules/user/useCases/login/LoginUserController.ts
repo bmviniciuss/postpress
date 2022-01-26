@@ -25,6 +25,7 @@ export class LoginUserController extends Controller {
   async execute (httpRequest: LoginUserControllerRequestDTO): Promise<HttpResponse<any>> {
     try {
       const validationError = this.validator.validate(httpRequest)
+      // TODO: verify this error return. It should return validation error. Invalid fields should be return from errros from use case
       if (validationError) return badRequest(new LoginUserErrors.InvalidParamsError())
 
       const accessToken = await this.useCase.execute(httpRequest)
