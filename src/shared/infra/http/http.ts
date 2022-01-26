@@ -22,6 +22,11 @@ export const badRequest = (error: Error): HttpResponse<Error> => ({
   data: error
 })
 
+export const notFound = (error: Error): HttpResponse<Error> => ({
+  statusCode: 404,
+  data: error
+})
+
 export const serverError = (error: unknown): HttpResponse<Error | undefined> => ({
   statusCode: 500,
   data: error instanceof Error ? new AppErrors.InternalAppError(error.stack) : undefined
