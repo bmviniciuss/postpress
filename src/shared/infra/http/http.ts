@@ -1,4 +1,16 @@
+import { User } from '@prisma/client'
+
 import { AppErrors } from '../../errors/AppErrors'
+
+export interface HttpRequest<T = any> {
+  body?: T
+  authenticatedUser?: User
+}
+
+export interface HttpAuthenticatedRequest<T = any> {
+  body?: T
+  authenticatedUser: User
+}
 
 export type HttpResponse<T = any> = {
   statusCode: number
@@ -28,4 +40,9 @@ export const ok = <T = any> (data: T): HttpResponse<T> => ({
 export const created = <T = any> (data: T): HttpResponse<T> => ({
   statusCode: 201,
   data
+})
+
+export const unauthorized = (error ?: Error): HttpResponse => ({
+  statusCode: 401,
+  data: error || new AppErrors.UnauthorizedError()
 })

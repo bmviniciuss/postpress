@@ -65,4 +65,25 @@ describe('PrismaUserRepository', () => {
       expect(created.email).toEqual(user.email)
     })
   })
+
+  describe('listAll', () => {
+    it('should return all users', async () => {
+      const users = await prisma.user.create({ data: userFactory(1) })
+      const result = await sut.listAll()
+      expect(result).toBeDefined()
+      expect(result.length).toEqual(1)
+      expect(result).toEqual([users])
+    })
+  })
+
+  describe('loadUserFromTokenAndId', () => {
+    it('should return user with id and token', async () => {
+      const token = faker.datatype.uuid()
+      const user = await prisma.user.create({
+        data: userFactory(1, { accessToken: token })
+      })
+      const result = await sut.loadUserFromTokenAndId(user.id, token)
+      expect(result).toEqual(user)
+    })
+  })
 })

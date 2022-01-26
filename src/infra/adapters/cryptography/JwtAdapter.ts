@@ -9,4 +9,13 @@ export class JwtAdapter implements JWT {
     const token = jwt.sign({ sub: plaintext }, this.secret)
     return Promise.resolve(token)
   }
+
+  decrypt (token: string): Promise<any | null> {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, this.secret, (err, decoded) => {
+        if (err) return resolve(null)
+        return resolve(decoded)
+      })
+    })
+  }
 }

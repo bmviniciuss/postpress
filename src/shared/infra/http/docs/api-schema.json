@@ -65,7 +65,9 @@
     "/user": {
       "post": {
         "description": "Route for register a new user. On success the user is automatically logged in.",
-        "tags": ["User"],
+        "tags": [
+          "User"
+        ],
         "parameters": [],
         "requestBody": {
           "content": {
@@ -109,11 +111,58 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "description": "List all users",
+        "responses": {
+          "200": {
+            "description": "List of all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/presentationUser"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized or invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "authorization": {
+        "type": "apiKey",
+        "name": "authorization",
+        "in": "header"
+      }
+    },
     "schemas": {
+      "uuid": {
+        "type": "string",
+        "example": "ef481a53-8b31-4655-8ac6-4bf106b7b1b0"
+      },
       "email": {
         "type": "string",
         "example": "john@mail.com"
@@ -122,7 +171,6 @@
         "type": "string",
         "example": "super secret password"
       },
-    
       "displayName": {
         "type": "string",
         "example": "John Doe"
@@ -176,6 +224,23 @@
         "properties": {
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "presentationUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "displayName": {
+            "$ref": "#/components/schemas/displayName"
+          },
+          "email": {
+            "$ref": "#/components/schemas/email"
+          },
+          "image": {
+            "$ref": "#/components/schemas/image"
           }
         }
       }

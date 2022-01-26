@@ -11,4 +11,6 @@ export interface UserRepository {
   loadByEmail(email: string): Promise<User | null>
   setAccessToken(userId: string, accessToken: string): Promise<boolean>
   register(data: UserRepositoryRegisterDTO): Promise<User>
+  listAll(): Promise<User[]>
+  loadUserFromTokenAndId(id: string, token: string): Promise<User | null>
 }
