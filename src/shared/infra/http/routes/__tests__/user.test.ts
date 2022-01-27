@@ -4,6 +4,7 @@ import request from 'supertest'
 
 import userFactory from '../../../../../../tests/factories/userFactory'
 import { buildAuthUser } from '../../../../../../tests/utils/buildAuthUser'
+import { makeBearerToken } from '../../../../../../tests/utils/makeBearerToken'
 import { UserMapper } from '../../../../../modules/user/models/mappers/UserMapper'
 import { makeExpressServer } from '../../config/makeExpressServer'
 
@@ -250,11 +251,45 @@ describe('User Routes', () => {
       const user = await buildAuthUser(userFactory(1), prisma)
       const response = await request(app)
         .get(makeUrl(user.id))
-        .set('authorization', `Bearer ${user.accessToken}`)
+        .set('authorization', makeBearerToken(user.accessToken!))
         .send()
       expect(response.statusCode).toEqual(200)
       expect(response.body.id).toEqual(user.id)
       expect(response.body.email).toEqual(user.email)
+    })
+  })
+
+  describe('DELETE /user/me', () => {
+    it('should return 401 if authentication is not provided or is invalid', async () => {
+      const noAuthRequest = await request(app)
+        .delete('/user/me')
+        .send()
+      expect(noAuthRequest.statusCode).toEqual(401)
+      expect(noAuthRequest.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token não encontrado",
+        }
+      `)
+
+      const invalidRequest = await request(app)
+        .delete('/user/me')
+        .set('authorization', 'Bearer random')
+        .send()
+      expect(invalidRequest.statusCode).toEqual(401)
+      expect(invalidRequest.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token expirado ou inválido",
+        }
+      `)
+    })
+
+    it('should return 204 on success', async () => {
+      const user = await buildAuthUser(userFactory(1), prisma)
+      const response = await request(app)
+        .delete('/user/me')
+        .set('authorization', makeBearerToken(user.accessToken!))
+        .send()
+      expect(response.statusCode).toEqual(204)
     })
   })
 })
