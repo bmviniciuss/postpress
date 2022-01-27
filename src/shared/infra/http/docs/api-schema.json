@@ -155,7 +155,9 @@
       "authorization": {
         "type": "apiKey",
         "name": "authorization",
-        "in": "header"
+        "in": "header",
+        "description": "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\""
+
       }
     },
     "schemas": {
