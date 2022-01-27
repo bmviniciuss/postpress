@@ -290,6 +290,10 @@ describe('User Routes', () => {
         .set('authorization', makeBearerToken(user.accessToken!))
         .send()
       expect(response.statusCode).toEqual(204)
+      const deletedUser = await prisma.user.findUnique({
+        where: { id: user.id }
+      })
+      expect(deletedUser).toBeNull()
     })
   })
 })
