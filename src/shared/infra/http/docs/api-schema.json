@@ -148,6 +148,61 @@
           }
         }
       }
+    },
+    "/user/{userId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "userId",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "ID of a user"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return user from {userId} param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/presentationUser"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Return a user not found error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Return a unauthorized or invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -155,7 +210,8 @@
       "authorization": {
         "type": "apiKey",
         "name": "authorization",
-        "in": "header"
+        "in": "header",
+        "description": "Standard Authorization header using the Bearer scheme. Example: \"Bearer {token}\""
       }
     },
     "schemas": {

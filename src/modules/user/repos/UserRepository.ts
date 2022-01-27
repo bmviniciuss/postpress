@@ -13,4 +13,5 @@ export interface UserRepository {
   register(data: UserRepositoryRegisterDTO): Promise<User>
   listAll(): Promise<User[]>
   loadUserFromTokenAndId(id: string, token: string): Promise<User | null>
+  loadById(id: string): Promise<User | null>
 }
