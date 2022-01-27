@@ -8,6 +8,8 @@ import { GetUserUseCase } from '../../../../modules/user/useCases/getUser/GetUse
 import { GetUsersController } from '../../../../modules/user/useCases/getUsers/GetUsersController'
 import { GetUsersUseCase } from '../../../../modules/user/useCases/getUsers/GetUsersUseCase'
 import { RegisterUserController } from '../../../../modules/user/useCases/register/RegisterUserController'
+import { RemoveUserController } from '../../../../modules/user/useCases/removeUser/RemoveUserController'
+import { RemoveUserUseCase } from '../../../../modules/user/useCases/removeUser/RemoveUserUseCase'
 import { expressMiddlewareAdapter } from '../../adapters/expressMiddlewareAdapter'
 import { expressAuthenticatedRouteAdapter, expressRouteAdapter } from '../../adapters/expressRouteAdapter'
 import { makeJwtAdapter } from '../../factories/makeJwtAdapter'
@@ -42,9 +44,16 @@ export const makeGetUserController = (prisma: PrismaClient) => {
   return new GetUserController(getUserUseCase)
 }
 
+export const makeRemoveUserController = (prisma: PrismaClient) => {
+  const userRepository = makePrismaUserRepository(prisma)
+  const removeUserUseCase = new RemoveUserUseCase(userRepository)
+  return new RemoveUserController(removeUserUseCase)
+}
+
 export const makeUsersRouter = (prisma: PrismaClient) => {
   const router = Router()
   router.post('/user', expressRouteAdapter(makeRegisterUserController(prisma)))
+
   router.get('/user',
     expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
     expressAuthenticatedRouteAdapter(makeGetUsersController(prisma))
@@ -52,6 +61,11 @@ export const makeUsersRouter = (prisma: PrismaClient) => {
   router.get('/user/:userId',
     expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
     expressAuthenticatedRouteAdapter(makeGetUserController(prisma))
+  )
+
+  router.delete('/user/me',
+    expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
+    expressAuthenticatedRouteAdapter(makeRemoveUserController(prisma))
   )
   return router
 }

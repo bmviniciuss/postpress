@@ -14,4 +14,5 @@ export interface UserRepository {
   listAll(): Promise<User[]>
   loadUserFromTokenAndId(id: string, token: string): Promise<User | null>
   loadById(id: string): Promise<User | null>
+  deleteUserById(id: string): Promise<User>
 }

@@ -203,6 +203,33 @@
           }
         }
       }
+    },
+    "/user/me": {
+      "delete": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "204": {
+            "description": "Ok. Deleted user from authorization token"
+          },
+          "401": {
+            "description": "Return a unauthorized or invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

@@ -102,4 +102,14 @@ describe('PrismaUserRepository', () => {
       expect(result).toEqual(null)
     })
   })
+
+  describe('deleteUserById', () => {
+    it('should return deleted user', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+      const result = await sut.deleteUserById(user.id)
+      expect(result).toEqual(user)
+    })
+  })
 })
