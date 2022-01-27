@@ -49,6 +49,11 @@ export const created = <T = any> (data: T): HttpResponse<T> => ({
   data
 })
 
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
+  data: null
+})
+
 export const unauthorized = (error ?: Error): HttpResponse => ({
   statusCode: 401,
   data: error || new AppErrors.UnauthorizedError()
