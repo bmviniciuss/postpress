@@ -3,6 +3,7 @@ import { mock } from 'jest-mock-extended'
 
 import postWithUserFactory from '../../../../../../tests/factories/postWithUserFactory'
 import { PostRepository } from '../../../repos/PostRepository'
+import { PostErrors } from '../../../shared/PostErrors'
 import { GetPostInputDTO } from '../GetPost'
 import { GetPostUseCase } from '../GetPostUseCase'
 
@@ -43,7 +44,7 @@ describe('GetPostUseCase', () => {
     const { sut, postRepositoryMock } = makeSut()
     postRepositoryMock.loadById.mockResolvedValueOnce(null)
     const promise = sut.execute(input)
-    expect(promise).rejects.toThrow()
+    expect(promise).rejects.toThrow(new PostErrors.PostNotFound())
   })
 
   it('should return post on success', async () => {

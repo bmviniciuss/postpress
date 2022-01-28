@@ -8,8 +8,14 @@ export interface PostRepositoryCreateDTO {
   userId: string
 }
 
+export interface PostRepositoryUpdateDTO {
+  title: string
+  content: string
+}
+
 export interface PostRepository {
   create(data: PostRepositoryCreateDTO): Promise<PostWithUser>
   getAll(): Promise<PostWithUser[]>
   loadById(id: string): Promise<PostWithUser | null>
+  update(postId: string, dataToUpdate: PostRepositoryUpdateDTO): Promise<PostWithUser>
 }

@@ -1,9 +1,10 @@
 import { PrismaClient } from '@prisma/client'
+import faker from 'faker'
 import { omit } from 'lodash'
 
 import postFactory from '../../../../../tests/factories/postFactory'
 import userFactory from '../../../../../tests/factories/userFactory'
-import { PostRepository, PostRepositoryCreateDTO } from '../PostRepository'
+import { PostRepository, PostRepositoryCreateDTO, PostRepositoryUpdateDTO } from '../PostRepository'
 import { PrismaPostRepository } from './PrismaPostRepository'
 
 describe('PrismaPostRepository', () => {
@@ -90,6 +91,34 @@ describe('PrismaPostRepository', () => {
       const post = await sut.loadById(createdPost.id)
       expect(post!.id).toBeDefined()
       expect(post!.user.id).toEqual(user.id)
+    })
+  })
+
+  describe('update', () => {
+    it('should return updated post', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+      const createdPost = await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        }
+      })
+
+      const payload: PostRepositoryUpdateDTO = {
+        title: faker.random.words(),
+        content: faker.random.words()
+      }
+      const updatedPost = await sut.update(createdPost.id, payload)
+      expect(updatedPost!.id).toBeDefined()
+      expect(updatedPost.title).toEqual(payload.title)
+      expect(updatedPost.content).toEqual(payload.content)
+      expect(updatedPost!.user.id).toEqual(user.id)
     })
   })
 })

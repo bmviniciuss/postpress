@@ -3,9 +3,9 @@ import { mock } from 'jest-mock-extended'
 
 import presentationPostFactory from '../../../../../../tests/factories/presentationPostFactory'
 import { notFound, ok, serverError } from '../../../../../shared/infra/http/http'
+import { PostErrors } from '../../../shared/PostErrors'
 import { GetPost } from '../GetPost'
 import { GetPostController, GetPostControllerRequest } from '../GetPostController'
-import { GetPostErrors } from '../GetPostErrors'
 
 const makeSut = () => {
   const getPostMock = mock<GetPost>()
@@ -44,11 +44,11 @@ describe('GetPostController', () => {
     })
   })
 
-  it('should return notFound if GetUsers throws a GetPostErrors.PostNotFound errors', async () => {
+  it('should return notFound if GetUsers throws a PostErrors.PostNotFound errors', async () => {
     const { sut, getPostMock } = makeSut()
-    getPostMock.execute.mockRejectedValueOnce(new GetPostErrors.PostNotFound())
+    getPostMock.execute.mockRejectedValueOnce(new PostErrors.PostNotFound())
     const result = await sut.execute(request)
-    expect(result).toEqual(notFound(new GetPostErrors.PostNotFound()))
+    expect(result).toEqual(notFound(new PostErrors.PostNotFound()))
   })
 
   it('should return serverError if GetUsers throws a unkown error', async () => {

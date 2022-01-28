@@ -10,6 +10,8 @@ import { GetPostController } from '../../../../modules/post/useCases/getPost/Get
 import { GetPostUseCase } from '../../../../modules/post/useCases/getPost/GetPostUseCase'
 import { GetPostsController } from '../../../../modules/post/useCases/getPosts/GetPostsController'
 import { GetPostsUseCase } from '../../../../modules/post/useCases/getPosts/GetPostsUseCase'
+import { UpdatePostController } from '../../../../modules/post/useCases/updatePost/UpdatePostController'
+import { UpdatePostUseCase } from '../../../../modules/post/useCases/updatePost/UpdatePostUseCase'
 import { expressMiddlewareAdapter } from '../../adapters/expressMiddlewareAdapter'
 import { expressAuthenticatedRouteAdapter } from '../../adapters/expressRouteAdapter'
 import { makeJwtAdapter } from '../../factories/makeJwtAdapter'
@@ -40,6 +42,16 @@ const makeGetPostController = (prisma: PrismaClient) => {
   return new GetPostController(getPostUseCase)
 }
 
+const makeUpdatePostController = (prisma: PrismaClient) => {
+  const updatePostValidator = new JoiValidatorAdapter(Joi.object({
+    title: Joi.string().required(),
+    content: Joi.string().required()
+  }))
+  const prismaPostRepository = new PrismaPostRepository(prisma)
+  const updatePostUseCase = new UpdatePostUseCase(prismaPostRepository)
+  return new UpdatePostController(updatePostValidator, updatePostUseCase)
+}
+
 export const makePostRoutes = (prisma: PrismaClient) => {
   const router = Router()
   router.post('/post',
@@ -55,6 +67,11 @@ export const makePostRoutes = (prisma: PrismaClient) => {
   router.get('/post/:postId',
     expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
     expressAuthenticatedRouteAdapter(makeGetPostController(prisma))
+  )
+
+  router.put('/post/:postId',
+    expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
+    expressAuthenticatedRouteAdapter(makeUpdatePostController(prisma))
   )
   return router
 }

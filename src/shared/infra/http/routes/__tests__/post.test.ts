@@ -228,4 +228,97 @@ describe('Post Routes', () => {
       `)
     })
   })
+
+  describe('PUT /post/:postId', () => {
+    const makeUrl = (postId: string) => {
+      return `/post/${postId}`
+    }
+
+    it('should return 401 if authentication is not provided', async () => {
+      const response = await request(app)
+        .put(makeUrl(faker.datatype.uuid()))
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token não encontrado",
+        }
+      `)
+    })
+
+    it('should return 401 if an invalid authentication is provided', async () => {
+      const response = await request(app)
+        .put(makeUrl(faker.datatype.uuid()))
+        .set('authorization', 'Bearer random')
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token expirado ou inválido",
+        }
+      `)
+    })
+
+    it('should return 400 with error message if validation fails', async () => {
+      const authRequest = () => request(app)
+        .put(makeUrl(faker.datatype.uuid()))
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+
+      await (async () => {
+        const noTitleResponse = await authRequest()
+          .send({ content: 'any' })
+        expect(noTitleResponse.statusCode).toEqual(400)
+        expect(noTitleResponse.body).toMatchInlineSnapshot(`
+          Object {
+            "message": "\\"title\\" is required",
+          }
+        `)
+      })()
+
+      await (async () => {
+        const noContentReponse = await authRequest()
+          .send({ title: 'any' })
+        expect(noContentReponse.statusCode).toEqual(400)
+        expect(noContentReponse.body).toMatchInlineSnapshot(`
+          Object {
+            "message": "\\"content\\" is required",
+          }
+        `)
+      })()
+    })
+
+    it('should return 404 if post does not exists', async () => {
+      const response = await request(app)
+        .put(makeUrl(faker.datatype.uuid()))
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+        .send({ title: 'any', content: 'any' })
+      expect(response.statusCode).toEqual(404)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Post não existe",
+        }
+      `)
+    })
+
+    it('should 200 on success', async () => {
+      const post = await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: { id: authUser.id }
+          }
+        }
+      })
+
+      const response = await request(app)
+        .put(makeUrl(post.id))
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+        .send({ title: 'title', content: 'content' })
+      expect(response.statusCode).toEqual(200)
+      expect(response.body.title).toEqual('title')
+      expect(response.body.title).toEqual('title')
+      expect(response.body.content).toEqual('content')
+      expect(response.body.userId).toEqual(authUser.id)
+    })
+  })
 })
