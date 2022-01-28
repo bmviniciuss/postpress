@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
+import { omit } from 'lodash'
 
+import postFactory from '../../../../../tests/factories/postFactory'
 import userFactory from '../../../../../tests/factories/userFactory'
 import { PostRepository, PostRepositoryCreateDTO } from '../PostRepository'
 import { PrismaPostRepository } from './PrismaPostRepository'
@@ -34,6 +36,39 @@ describe('PrismaPostRepository', () => {
       const post = await sut.create(payload)
       expect(post.id).toBeDefined()
       expect(post.user.id).toEqual(user.id)
+    })
+  })
+
+  describe('getAll', () => {
+    it('should return all posts with user', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+      await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        }
+      })
+      await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        }
+      })
+      const posts = await sut.getAll()
+      expect(posts.length).toEqual(2)
+      posts.forEach((post) => {
+        expect(post.user.id).toEqual(user.id)
+      })
     })
   })
 })
