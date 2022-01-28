@@ -283,6 +283,38 @@
             }
           }
         }
+      },
+      "get": {
+        "description": "Route listing all blog posts",
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"array",
+                  "items": {
+                    "$ref": "#/components/schemas/presentationPost"
+                  }
+                }
+              }
+            }
+          },
+          
+          "401": {
+            "description": "Unauthorized or Invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -319,6 +351,10 @@
       "image": {
         "type": "string",
         "example": "https://dummyimage.com/300x300/fff/aaa"
+      },
+      "date": {
+        "type": "string",
+        "example": "2022-01-27T03:28:11.101Z"
       },
       "loginUserInput": {
         "type": "object",
@@ -407,6 +443,29 @@
           },
           "image": {
             "$ref": "#/components/schemas/image"
+          }
+        }
+      },
+      "presentationPost": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/uuid"
+          },
+          "published": {
+            "$ref": "#/components/schemas/date"
+          },
+          "updated": {
+            "$ref": "#/components/schemas/date"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/presentationUser"
           }
         }
       }
