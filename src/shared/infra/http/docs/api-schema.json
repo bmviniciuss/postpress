@@ -370,6 +370,54 @@
             }
           }
         }
+      },
+      "put": {
+        "description": "Allows user to update their blog posts",
+        "tags": [
+          "Post"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updatePostInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Post was succefully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/updatePostPaylod"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized or Invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -454,6 +502,21 @@
           "content"
         ]
       },
+      "updatePostInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "content"
+        ]
+      },
       "authTokenPayload": {
         "type": "object",
         "properties": {
@@ -463,6 +526,20 @@
         }
       },
       "createPostPaylod": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/uuid"
+          }
+        }
+      },
+      "updatePostPaylod": {
         "type": "object",
         "properties": {
           "title": {
