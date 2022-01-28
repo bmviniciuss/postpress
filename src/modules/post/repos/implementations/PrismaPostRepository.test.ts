@@ -71,4 +71,25 @@ describe('PrismaPostRepository', () => {
       })
     })
   })
+
+  describe('loadById', () => {
+    it('should return post with user', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+      const createdPost = await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        }
+      })
+      const post = await sut.loadById(createdPost.id)
+      expect(post!.id).toBeDefined()
+      expect(post!.user.id).toEqual(user.id)
+    })
+  })
 })
