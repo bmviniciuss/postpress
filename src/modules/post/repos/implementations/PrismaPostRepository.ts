@@ -21,4 +21,10 @@ export class PrismaPostRepository implements PostRepository {
       }
     })
   }
+
+  getAll (): Promise<PostWithUser[]> {
+    return this.prisma.post.findMany({
+      include: { user: true }
+    })
+  }
 }
