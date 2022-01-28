@@ -19,4 +19,17 @@ model User {
   accessToken String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  Post        Post[]
+}
+
+model Post {
+  id      String @id @default(uuid())
+  title   String
+  content String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  published DateTime @default(now())
+  updated   DateTime @updatedAt
 }

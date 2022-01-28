@@ -17,6 +17,9 @@
     },
     {
       "name": "User"
+    },
+    {
+      "name": "Post"
     }
   ],
   "paths": {
@@ -230,6 +233,57 @@
           }
         }
       }
+    },
+    "/post": {
+      "post": {
+        "description": "Route creating a new blog post",
+        "tags": [
+          "Post"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createPostInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Post created succefully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createPostPaylod"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized or Invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -294,11 +348,40 @@
           }
         }
       },
+      "createPostInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "content"
+        ]
+      },
       "authTokenPayload": {
         "type": "object",
         "properties": {
           "token": {
             "$ref": "#/components/schemas/jwtToken"
+          }
+        }
+      },
+      "createPostPaylod": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/uuid"
           }
         }
       },
