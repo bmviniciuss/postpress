@@ -27,4 +27,11 @@ export class PrismaPostRepository implements PostRepository {
       include: { user: true }
     })
   }
+
+  loadById (id: string): Promise<PostWithUser | null> {
+    return this.prisma.post.findUnique({
+      where: { id },
+      include: { user: true }
+    })
+  }
 }
