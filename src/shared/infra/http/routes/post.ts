@@ -6,6 +6,8 @@ import { JoiValidatorAdapter } from '../../../../infra/adapters/validation/JoiVa
 import { PrismaPostRepository } from '../../../../modules/post/repos/implementations/PrismaPostRepository'
 import { CreatePostController } from '../../../../modules/post/useCases/createPost/CreatePostController'
 import { CreatePostUseCase } from '../../../../modules/post/useCases/createPost/CreatePostUseCase'
+import { GetPostController } from '../../../../modules/post/useCases/getPost/GetPostController'
+import { GetPostUseCase } from '../../../../modules/post/useCases/getPost/GetPostUseCase'
 import { GetPostsController } from '../../../../modules/post/useCases/getPosts/GetPostsController'
 import { GetPostsUseCase } from '../../../../modules/post/useCases/getPosts/GetPostsUseCase'
 import { expressMiddlewareAdapter } from '../../adapters/expressMiddlewareAdapter'
@@ -32,6 +34,12 @@ const makeGetPostsController = (prisma: PrismaClient) => {
   return new GetPostsController(getPostsUseCase)
 }
 
+const makeGetPostController = (prisma: PrismaClient) => {
+  const prismaPostRepository = new PrismaPostRepository(prisma)
+  const getPostUseCase = new GetPostUseCase(prismaPostRepository)
+  return new GetPostController(getPostUseCase)
+}
+
 export const makePostRoutes = (prisma: PrismaClient) => {
   const router = Router()
   router.post('/post',
@@ -42,6 +50,11 @@ export const makePostRoutes = (prisma: PrismaClient) => {
   router.get('/post',
     expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
     expressAuthenticatedRouteAdapter(makeGetPostsController(prisma))
+  )
+
+  router.get('/post/:postId',
+    expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
+    expressAuthenticatedRouteAdapter(makeGetPostController(prisma))
   )
   return router
 }
