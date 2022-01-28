@@ -1,7 +1,8 @@
 import { Controller } from '../../../../shared/infra/http/Controller'
-import { badRequest, HttpAuthenticatedRequest, HttpResponse, ok, serverError } from '../../../../shared/infra/http/http'
+import { badRequest, HttpAuthenticatedRequest, HttpResponse, notFound, ok, serverError } from '../../../../shared/infra/http/http'
 import { Validator } from '../../../../validation/Validator'
 import { PresentationUpdatedPost } from '../../models/mapper/PresentationUpdatedPost'
+import { PostErrors } from '../../shared/PostErrors'
 import { UpdatePost, UpdatePostInputDTO } from './UpdatePost'
 import { UpdatePostError } from './UpdatePostErrors'
 
@@ -46,6 +47,8 @@ export class UpdatePostController extends Controller {
         switch (error.constructor) {
           case UpdatePostError.UnauthorizedToUpdatePostError:
             return badRequest(error)
+          case PostErrors.PostNotFound:
+            return notFound(error)
         }
       }
 
