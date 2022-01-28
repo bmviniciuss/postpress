@@ -17,5 +17,5 @@ export interface PostRepository {
   create(data: PostRepositoryCreateDTO): Promise<PostWithUser>
   getAll(): Promise<PostWithUser[]>
   loadById(id: string): Promise<PostWithUser | null>
-  update(data: PostRepositoryUpdateDTO): Promise<PostWithUser>
+  update(postId: string, dataToUpdate: PostRepositoryUpdateDTO): Promise<PostWithUser>
 }
