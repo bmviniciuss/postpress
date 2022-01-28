@@ -316,6 +316,61 @@
           }
         }
       }
+    },
+    "/post/{postId}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "postId",
+          "schema": {
+            "type": "string"
+          },
+          "required": true,
+          "description": "ID of a blog Post"
+        }
+      ],
+      "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/presentationPost"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized or Invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
