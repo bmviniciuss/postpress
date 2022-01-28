@@ -11,4 +11,5 @@ export interface PostRepositoryCreateDTO {
 export interface PostRepository {
   create(data: PostRepositoryCreateDTO): Promise<PostWithUser>
   getAll(): Promise<PostWithUser[]>
+  loadById(id: string): Promise<PostWithUser | null>
 }
