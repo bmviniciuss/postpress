@@ -6,23 +6,11 @@ import { JoiValidatorAdapter } from '../../../../infra/adapters/validation/JoiVa
 import { PrismaPostRepository } from '../../../../modules/post/repos/implementations/PrismaPostRepository'
 import { CreatePostController } from '../../../../modules/post/useCases/createPost/CreatePostController'
 import { CreatePostUseCase } from '../../../../modules/post/useCases/createPost/CreatePostUseCase'
-import { LoginUserController } from '../../../../modules/user/useCases/login/LoginUserController'
 import { expressMiddlewareAdapter } from '../../adapters/expressMiddlewareAdapter'
 import { expressAuthenticatedRouteAdapter } from '../../adapters/expressRouteAdapter'
 import { makeJwtAdapter } from '../../factories/makeJwtAdapter'
 import { makePrismaUserRepository } from '../../factories/repositories/prisma/makePrismaUserRepository'
-import { makeLoginUserUseCase } from '../../factories/useCases/user/makeLoginUserUseCase'
-import { Controller } from '../Controller'
 import { AuthMidddleware } from '../middlewares/AuthMiddleware'
-
-export const makeLoginUserController = (prisma: PrismaClient): Controller => {
-  const loginUserUseCase = makeLoginUserUseCase(prisma)
-  const loginUserValidator = new JoiValidatorAdapter(Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().required()
-  }))
-  return new LoginUserController(loginUserValidator, loginUserUseCase)
-}
 
 const makeCreatePostController = (prisma: PrismaClient) => {
   const createPostValidation = new JoiValidatorAdapter(Joi.object({
