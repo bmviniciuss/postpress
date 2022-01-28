@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 
-import { PostRepository, PostRepositoryCreateDTO, PostWithUser } from '../PostRepository'
+import { PostRepository, PostRepositoryCreateDTO, PostRepositoryUpdateDTO, PostWithUser } from '../PostRepository'
 
 export class PrismaPostRepository implements PostRepository {
   constructor (private readonly prisma: PrismaClient) {}
@@ -32,6 +32,16 @@ export class PrismaPostRepository implements PostRepository {
     return this.prisma.post.findUnique({
       where: { id },
       include: { user: true }
+    })
+  }
+
+  update (postId: string, dataToUpdate: PostRepositoryUpdateDTO): Promise<PostWithUser> {
+    return this.prisma.post.update({
+      where: { id: postId },
+      data: dataToUpdate,
+      include: {
+        user: true
+      }
     })
   }
 }
