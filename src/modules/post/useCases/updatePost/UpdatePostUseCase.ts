@@ -17,9 +17,11 @@ export class UpdatePostUseCase implements UpdatePost {
       throw new UpdatePostError.UnauthorizedToUpdatePostError()
     }
 
-    return await this.postRepository.update({
-      title: data.title,
-      content: data.content
-    })
+    return await this.postRepository.update(
+      data.postId,
+      {
+        title: data.title,
+        content: data.content
+      })
   }
 }

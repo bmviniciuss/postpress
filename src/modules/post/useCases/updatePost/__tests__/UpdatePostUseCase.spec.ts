@@ -71,10 +71,12 @@ describe('UpdatePostUseCase', () => {
   it('should call PostRepository.update with correct values', async () => {
     const { sut, postRepositoryMock } = makeSut(userId)
     await sut.execute(input)
-    expect(postRepositoryMock.update).toHaveBeenCalledWith({
-      title: input.title,
-      content: input.content
-    })
+    expect(postRepositoryMock.update).toHaveBeenCalledWith(
+      input.postId,
+      {
+        title: input.title,
+        content: input.content
+      })
   })
 
   it('should return updatePost on success', async () => {
