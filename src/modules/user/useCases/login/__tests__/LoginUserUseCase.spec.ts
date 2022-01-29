@@ -5,7 +5,7 @@ import userFactory from '../../../../../../tests/factories/userFactory'
 import { HashComparer } from '../../../../../cryptography/Hash'
 import { JWT } from '../../../../../cryptography/Jwt'
 import { UserRepository } from '../../../repos/UserRepository'
-import { LoginUserDTO } from '../LoginUse'
+import { LoginUserDTO } from '../LoginUser'
 import { LoginUserErrors } from '../LoginUserErrors'
 import { LoginUserUseCase } from '../LoginUserUseCase'
 

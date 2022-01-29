@@ -1,7 +1,7 @@
 import { HashComparer } from '../../../../cryptography/Hash'
 import { JWT } from '../../../../cryptography/Jwt'
 import { UserRepository } from '../../repos/UserRepository'
-import { LoginUserDTO, LoginUserReponseDTO, LoginUser } from './LoginUse'
+import { LoginUserDTO, LoginUserReponseDTO, LoginUser } from './LoginUser'
 import { LoginUserErrors } from './LoginUserErrors'
 
 export class LoginUserUseCase implements LoginUser {

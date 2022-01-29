@@ -2,7 +2,7 @@
 import { Controller } from '../../../../shared/infra/http/Controller'
 import { badRequest, conflict, created, HttpResponse, serverError } from '../../../../shared/infra/http/http'
 import { Validator } from '../../../../validation/Validator'
-import { LoginUser } from '../login/LoginUse'
+import { LoginUser } from '../login/LoginUser'
 import { RegisterUser } from './RegisterUser'
 import { RegisterUserErrors } from './RegisterUserErrors'
 
@@ -17,6 +17,7 @@ export type RegisterUserControllerResponseDTO = {
   token: string
 }
 
+// TODO: atualizar para novo padrão
 export class RegisterUserController extends Controller {
   constructor (
     private readonly validator: Validator,

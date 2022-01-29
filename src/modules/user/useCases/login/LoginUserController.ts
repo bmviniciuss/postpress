@@ -2,7 +2,7 @@
 import { Controller } from '../../../../shared/infra/http/Controller'
 import { badRequest, HttpResponse, ok, serverError } from '../../../../shared/infra/http/http'
 import { Validator } from '../../../../validation/Validator'
-import { LoginUser } from './LoginUse'
+import { LoginUser } from './LoginUser'
 import { LoginUserErrors } from './LoginUserErrors'
 
 export type LoginUserControllerRequestDTO = {
@@ -14,6 +14,7 @@ export type LoginUserControllerResponseDTO = {
   token: string
 }
 
+// TODO: Atualizar forma do input para HttpRequest
 export class LoginUserController extends Controller {
   constructor (
     private readonly validator: Validator,
