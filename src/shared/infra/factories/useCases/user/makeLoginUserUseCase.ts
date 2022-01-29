@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import { LoginUserUseCase } from '../../../../../modules/user/useCases/login/LoginUserUseCase'
 import { makeBcrytAdapter } from '../../makeBcryptAdapter'
 import { makeJwtAdapter } from '../../makeJwtAdapter'
-import { makePrismaUserRepository } from '../../repositories/prisma/makePrismaUserRepository'
+import { makePrismaUserRepository } from '../../repositories/prisma/prismaRepositoriesFactories'
 
 export const makeLoginUserUseCase = (prisma: PrismaClient) => {
   const prismaUserRepository = makePrismaUserRepository(prisma)
