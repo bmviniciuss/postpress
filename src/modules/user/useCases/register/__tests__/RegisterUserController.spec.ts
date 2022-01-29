@@ -1,13 +1,13 @@
 import faker from 'faker'
 import { mock } from 'jest-mock-extended'
 
-import userFactory from '../../../../../tests/factories/userFactory'
-import { badRequest, conflict, created } from '../../../../shared/infra/http/http'
-import { Validator } from '../../../../validation/Validator'
-import { LoginUser } from '../login/LoginUser'
-import { RegisterUser } from './RegisterUser'
-import { RegisterUserController, RegisterUserControllerRequest } from './RegisterUserController'
-import { RegisterUserErrors } from './RegisterUserErrors'
+import userFactory from '../../../../../../tests/factories/userFactory'
+import { badRequest, conflict, created } from '../../../../../shared/infra/http/http'
+import { Validator } from '../../../../../validation/Validator'
+import { LoginUser } from '../../login/LoginUser'
+import { RegisterUser } from '../RegisterUser'
+import { RegisterUserController, RegisterUserControllerRequest } from '../RegisterUserController'
+import { RegisterUserErrors } from '../RegisterUserErrors'
 
 const makeSut = () => {
   const validatorMock = mock<Validator>()
