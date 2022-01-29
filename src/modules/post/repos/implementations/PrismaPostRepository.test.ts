@@ -203,4 +203,26 @@ describe('PrismaPostRepository', () => {
       expect(posts.length).toEqual(2)
     })
   })
+
+  describe('deletePostById', () => {
+    it('should return deleted post on success', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+      const createdPost = await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        }
+      })
+
+      const updatedPost = await sut.deletePostById(createdPost.id)
+      expect(updatedPost!.id).toBeDefined()
+      expect(updatedPost!.user.id).toEqual(user.id)
+    })
+  })
 })
