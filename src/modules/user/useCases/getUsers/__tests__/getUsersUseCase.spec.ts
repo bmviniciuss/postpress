@@ -1,9 +1,9 @@
 import { mock } from 'jest-mock-extended'
 import { pick } from 'lodash'
 
-import userFactory from '../../../../../tests/factories/userFactory'
-import { UserRepository } from '../../repos/UserRepository'
-import { GetUsersUseCase } from './GetUsersUseCase'
+import userFactory from '../../../../../../tests/factories/userFactory'
+import { UserRepository } from '../../../repos/UserRepository'
+import { GetUsersUseCase } from '../GetUsersUseCase'
 
 const makeSut = () => {
   const userRepositoryMock = mock<UserRepository>()

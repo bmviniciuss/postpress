@@ -1,9 +1,9 @@
 import { mock } from 'jest-mock-extended'
 
-import userFactory from '../../../../../tests/factories/userFactory'
-import { ok, serverError } from '../../../../shared/infra/http/http'
-import { GetUsers } from './GetUsers'
-import { GetUsersController } from './GetUsersController'
+import userFactory from '../../../../../../tests/factories/userFactory'
+import { ok, serverError } from '../../../../../shared/infra/http/http'
+import { GetUsers } from '../GetUsers'
+import { GetUsersController } from '../GetUsersController'
 
 const makeSut = () => {
   const getUsersMock = mock<GetUsers>()

@@ -1,12 +1,12 @@
 import faker from 'faker'
 import { mock } from 'jest-mock-extended'
 
-import userFactory from '../../../../../tests/factories/userFactory'
-import { Hasher } from '../../../../cryptography/Hash'
-import { UserRepository } from '../../repos/UserRepository'
-import { RegisterUserDTO } from './RegisterUser'
-import { RegisterUserErrors } from './RegisterUserErrors'
-import { RegisterUserUseCase } from './RegisterUserUseCase'
+import userFactory from '../../../../../../tests/factories/userFactory'
+import { Hasher } from '../../../../../cryptography/Hash'
+import { UserRepository } from '../../../repos/UserRepository'
+import { RegisterUserDTO } from '../RegisterUser'
+import { RegisterUserErrors } from '../RegisterUserErrors'
+import { RegisterUserUseCase } from '../RegisterUserUseCase'
 
 const makeSut = () => {
   const userRepositoryMock = mock<UserRepository>()

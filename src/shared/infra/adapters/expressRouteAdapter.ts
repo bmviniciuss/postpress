@@ -2,14 +2,20 @@ import { Request, RequestHandler, Response } from 'express'
 
 import { AppErrors } from '../../errors/AppErrors'
 import { Controller } from '../http/Controller'
-import { HttpAuthenticatedRequest } from '../http/http'
+import { HttpAuthenticatedRequest, HttpRequest } from '../http/http'
 
 export type ExpressRouteAdapter = (controller: Controller) => RequestHandler
 
 export const expressRouteAdapter: ExpressRouteAdapter = (controller: Controller) => {
   return async (req: Request, res: Response) => {
-    // TODO: add same input payload as expressAuthenticatedRouteAdapter
-    const { statusCode, data } = await controller.handle(req.body)
+    const payload: HttpRequest = {
+      params: req?.params ?? {},
+      body: req.body,
+      query: req.query,
+      authenticatedUser: req.authenticatedUser
+    }
+
+    const { statusCode, data } = await controller.handle(payload)
 
     if (statusCode >= 200 && statusCode <= 299) {
       return res.status(statusCode).json(data)
