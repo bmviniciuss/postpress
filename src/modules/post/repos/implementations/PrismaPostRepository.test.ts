@@ -121,4 +121,86 @@ describe('PrismaPostRepository', () => {
       expect(updatedPost!.user.id).toEqual(user.id)
     })
   })
+
+  describe('findBySearch', () => {
+    it('should search for post by title or content when searchTerm is provided', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+      const createdPost = await prisma.post.create({
+        data: {
+          title: 'super title',
+          content: 'my post content',
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        },
+        include: { user: true }
+      })
+
+      await (async () => {
+        const posts = await sut.findBySearch({
+          searchTerm: 'title'
+        })
+        expect(posts).toEqual([createdPost])
+      })()
+
+      await (async () => {
+        const posts = await sut.findBySearch({
+          searchTerm: 'super ti'
+        })
+        expect(posts).toEqual([createdPost])
+      })()
+
+      await (async () => {
+        const posts = await sut.findBySearch({
+          searchTerm: 'post'
+        })
+        expect(posts).toEqual([createdPost])
+      })()
+
+      await (async () => {
+        const posts = await sut.findBySearch({
+          searchTerm: 'post content'
+        })
+        expect(posts).toEqual([createdPost])
+      })()
+    })
+
+    it('should return all posts if no searchTerm is provided', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+      await prisma.post.create({
+        data: {
+          title: 'super title',
+          content: 'my post content',
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        },
+        include: { user: true }
+      })
+
+      await prisma.post.create({
+        data: {
+          title: 'super title',
+          content: 'my post content',
+          user: {
+            connect: {
+              id: user.id
+            }
+          }
+        },
+        include: { user: true }
+      })
+
+      const posts = await sut.findBySearch({})
+      expect(posts.length).toEqual(2)
+    })
+  })
 })

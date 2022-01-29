@@ -236,6 +236,11 @@
     },
     "/post": {
       "post": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
         "description": "Route creating a new blog post",
         "tags": [
           "Post"
@@ -285,6 +290,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
         "description": "Route listing all blog posts",
         "tags": [
           "Post"
@@ -295,7 +305,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type":"array",
+                  "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/presentationPost"
                   }
@@ -303,7 +313,6 @@
               }
             }
           },
-          
           "401": {
             "description": "Unauthorized or Invalid token error",
             "content": {
@@ -372,6 +381,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
         "description": "Allows user to update their blog posts",
         "tags": [
           "Post"
@@ -409,6 +423,54 @@
           },
           "401": {
             "description": "Unauthorized or Invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/post/search": {
+      "parameters": [
+        {
+          "in": "query",
+          "name": "q",
+          "schema": {
+            "type": "string"
+          },
+          "description": "Filter posts that contains the searchTerm in title or content"
+        }
+      ],
+      "get": {
+        "description": "Search for posts, if no parameters are set it will return all posts",
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog pots",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/presentationPost"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Return a unauthorized or invalid token error",
             "content": {
               "application/json": {
                 "schema": {
