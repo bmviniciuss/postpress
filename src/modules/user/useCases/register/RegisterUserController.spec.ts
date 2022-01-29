@@ -6,7 +6,7 @@ import { badRequest, conflict, created } from '../../../../shared/infra/http/htt
 import { Validator } from '../../../../validation/Validator'
 import { LoginUser } from '../login/LoginUser'
 import { RegisterUser } from './RegisterUser'
-import { RegisterUserController, RegisterUserControllerRequestDTO } from './RegisterUserController'
+import { RegisterUserController, RegisterUserControllerRequest } from './RegisterUserController'
 import { RegisterUserErrors } from './RegisterUserErrors'
 
 const makeSut = () => {
@@ -38,58 +38,60 @@ const makeSut = () => {
   }
 }
 
-const makeParams = (): RegisterUserControllerRequestDTO => ({
-  email: faker.internet.email(),
-  password: faker.internet.password(7),
-  displayName: faker.name.findName(),
-  image: faker.internet.url()
+const makeRequest = (): RegisterUserControllerRequest => ({
+  body: {
+    email: faker.internet.email(),
+    password: faker.internet.password(7),
+    displayName: faker.name.findName(),
+    image: faker.internet.url()
+  }
 })
 
 describe('RegisterUserController', () => {
-  let params: RegisterUserControllerRequestDTO
+  let request: RegisterUserControllerRequest
 
   beforeEach(() => {
-    params = makeParams()
+    request = makeRequest()
   })
 
   it('should call Validator with correct params', async () => {
     const { sut, validatorMock } = makeSut()
-    await sut.execute(params)
-    expect(validatorMock.validate).toHaveBeenCalledWith(params)
+    await sut.execute(request)
+    expect(validatorMock.validate).toHaveBeenCalledWith(request.body)
   })
 
   it('should return a badRequest if Validator returns an error', async () => {
     const { sut, validatorMock } = makeSut()
     validatorMock.validate.mockReturnValueOnce(new Error())
-    const response = await sut.execute(params)
+    const response = await sut.execute(request)
     expect(response).toEqual(badRequest(new Error()))
   })
 
   it('should call RegisterUser with correct values', async () => {
     const { sut, registerUserMock } = makeSut()
-    await sut.execute(params)
-    expect(registerUserMock.execute).toHaveBeenCalledWith(params)
+    await sut.execute(request)
+    expect(registerUserMock.execute).toHaveBeenCalledWith(request.body)
   })
 
   it('should return a conflict response if RegisterUser throws a EmailAlreadyInUseError', async () => {
     const { sut, registerUserMock } = makeSut()
     registerUserMock.execute.mockRejectedValueOnce(new RegisterUserErrors.EmailAlreadyInUseError())
-    const result = await sut.execute(params)
+    const result = await sut.execute(request)
     expect(result).toEqual(conflict(new RegisterUserErrors.EmailAlreadyInUseError()))
   })
 
   it('should call LoginUser with User email and password', async () => {
     const { sut, registeredUser, loginUserMock } = makeSut()
-    await sut.execute(params)
+    await sut.execute(request)
     expect(loginUserMock.execute).toHaveBeenCalledWith({
       email: registeredUser.email,
-      password: params.password
+      password: request.body!.password
     })
   })
 
   it('should return created with token on success', async () => {
     const { sut, accessToken } = makeSut()
-    const result = await sut.execute(params)
+    const result = await sut.execute(request)
     expect(result).toEqual(created({
       token: accessToken
     }))
