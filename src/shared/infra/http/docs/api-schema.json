@@ -432,6 +432,52 @@
             }
           }
         }
+      },
+      "delete": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
+        "description": "Allows blog posts author to delete the post",
+        "tags": [
+          "Post"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updatePostInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Post was succefully deleted"
+          },
+          "404": {
+            "description": "Blog post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized or Invalid token error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorPayload"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/post/search": {
