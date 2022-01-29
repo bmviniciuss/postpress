@@ -64,4 +64,11 @@ export class PrismaPostRepository implements PostRepository {
       include: { user: true }
     })
   }
+
+  deletePostById (id: string): Promise<PostWithUser> {
+    return this.prisma.post.delete({
+      where: { id },
+      include: { user: true }
+    })
+  }
 }

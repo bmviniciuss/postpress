@@ -1,6 +1,6 @@
 {
   "name": "postpress",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "1. [Database](./docs/database.md) 2. Routes    1. [User](./docs/user-routes.md)",
   "main": "index.js",
   "directories": {

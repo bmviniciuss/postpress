@@ -23,4 +23,5 @@ export interface PostRepository {
   loadById(id: string): Promise<PostWithUser | null>
   update(postId: string, dataToUpdate: PostRepositoryUpdateDTO): Promise<PostWithUser>
   findBySearch(query?: PostRepositoryFindBySearchDTO): Promise<PostWithUser[]>
+  deletePostById(id: string): Promise<PostWithUser>
 }
