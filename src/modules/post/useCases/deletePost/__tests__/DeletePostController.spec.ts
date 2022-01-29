@@ -1,7 +1,6 @@
 import faker from 'faker'
 import { mock } from 'jest-mock-extended'
 
-import presentationPostFactory from '../../../../../../tests/factories/presentationPostFactory'
 import userFactory from '../../../../../../tests/factories/userFactory'
 import { noContent, notFound, serverError, unauthorized } from '../../../../../shared/infra/http/http'
 import { PostErrors } from '../../../shared/PostErrors'
@@ -12,7 +11,7 @@ import { DeletePostErrors } from '../DeletePostErrors'
 const makeSut = () => {
   const deletePostUseCaseMock = mock<DeletePost>()
 
-  deletePostUseCaseMock.execute.mockResolvedValue(presentationPostFactory(1))
+  deletePostUseCaseMock.execute.mockResolvedValue()
 
   const sut = new DeletePostController(deletePostUseCaseMock)
 
