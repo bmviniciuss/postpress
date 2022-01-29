@@ -406,4 +406,71 @@ describe('Post Routes', () => {
       expect(response.body.length).toEqual(2)
     })
   })
+
+  describe('DELETE /post/:postId', () => {
+    const makeUrl = (postId: string) => {
+      return `/post/${postId}`
+    }
+
+    it('should return 401 if authentication is not provided', async () => {
+      const response = await request(app)
+        .delete(makeUrl(faker.datatype.uuid()))
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token não encontrado",
+        }
+      `)
+    })
+
+    it('should return 401 if an invalid authentication is provided', async () => {
+      const response = await request(app)
+        .delete(makeUrl(faker.datatype.uuid()))
+        .set('authorization', 'Bearer random')
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token expirado ou inválido",
+        }
+      `)
+    })
+
+    it('should return 404 if post does not exists', async () => {
+      const response = await request(app)
+        .delete(makeUrl(faker.datatype.uuid()))
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+        .send()
+      expect(response.statusCode).toEqual(404)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Post não existe",
+        }
+      `)
+    })
+
+    it('should return 204 on success', async () => {
+      const post = await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: { id: authUser.id }
+          }
+        }
+      })
+      const response = await request(app)
+        .delete(makeUrl(post.id))
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+        .send()
+      expect(response.statusCode).toEqual(204)
+      expect(response.body).toMatchInlineSnapshot('Object {}')
+
+      const deletedPost = await prisma.post.findUnique({
+        where: { id: post.id }
+      })
+
+      expect(deletedPost).toBeNull()
+    })
+  })
 })
