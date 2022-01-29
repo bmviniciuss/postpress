@@ -321,4 +321,89 @@ describe('Post Routes', () => {
       expect(response.body.userId).toEqual(authUser.id)
     })
   })
+
+  describe('GET /post/search?q=searchTerm', () => {
+    const makeUrl = () => {
+      return '/post/search'
+    }
+
+    it('should return 401 if authentication is not provided', async () => {
+      const response = await request(app)
+        .get(makeUrl())
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token não encontrado",
+        }
+      `)
+    })
+
+    it('should return 401 if an invalid authentication is provided', async () => {
+      const response = await request(app)
+        .get(makeUrl())
+        .set('authorization', 'Bearer random')
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Token expirado ou inválido",
+        }
+      `)
+    })
+
+    it('should 200 with filtered post', async () => {
+      const post = await prisma.post.create({
+        data: {
+          title: 'Vamos que vamos',
+          content: 'Foguete não tem ré',
+          user: {
+            connect: {
+              id: authUser.id
+            }
+          }
+        }
+      })
+
+      const response = await request(app)
+        .get(makeUrl())
+        .query({ q: 'Vamos que vamos' })
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+      expect(response.statusCode).toEqual(200)
+      expect(response.body[0].id).toEqual(post.id)
+      expect(response.body[0].title).toEqual(post.title)
+      expect(response.body[0].user.id).toEqual(authUser.id)
+    })
+
+    it('should 200 with all posts if no query params is sent', async () => {
+      await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: {
+              id: authUser.id
+            }
+          }
+        }
+      })
+
+      await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: {
+              id: authUser.id
+            }
+          }
+        }
+      })
+
+      const response = await request(app)
+        .get(makeUrl())
+        .query({ q: '' })
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+      expect(response.statusCode).toEqual(200)
+      expect(response.body.length).toEqual(2)
+    })
+  })
 })
