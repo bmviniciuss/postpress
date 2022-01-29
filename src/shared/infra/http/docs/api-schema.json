@@ -236,6 +236,11 @@
     },
     "/post": {
       "post": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
         "description": "Route creating a new blog post",
         "tags": [
           "Post"
@@ -285,6 +290,11 @@
         }
       },
       "get": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
         "description": "Route listing all blog posts",
         "tags": [
           "Post"
@@ -371,6 +381,11 @@
         }
       },
       "put": {
+        "security": [
+          {
+            "authorization": []
+          }
+        ],
         "description": "Allows user to update their blog posts",
         "tags": [
           "Post"
