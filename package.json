@@ -9,6 +9,8 @@
   "scripts": {
     "prebuild": "rimraf ./dist",
     "build": "tsc",
+    "start:migrate:prod": "prisma migrate deploy && npm run prod:run",
+    "prod:run": "node dist/index.js",
     "dev:run": "nodemon --config nodemon.json src/index.ts",
     "lint": "eslint 'src/**' --quiet",
     "lint:fix": "eslint 'src/**' --quiet --fix",

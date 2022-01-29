@@ -11,6 +11,16 @@ services:
       - '15432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
+  api:
+    restart: always
+    build: 
+      context: .
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    env_file:
+      - .env
 
 volumes:
   db-data:
