@@ -13,9 +13,14 @@ export interface PostRepositoryUpdateDTO {
   content: string
 }
 
+export interface PostRepositoryFindBySearchDTO {
+  searchTerm?: string
+}
+
 export interface PostRepository {
   create(data: PostRepositoryCreateDTO): Promise<PostWithUser>
   getAll(): Promise<PostWithUser[]>
   loadById(id: string): Promise<PostWithUser | null>
   update(postId: string, dataToUpdate: PostRepositoryUpdateDTO): Promise<PostWithUser>
+  findBySearch(query?: PostRepositoryFindBySearchDTO): Promise<PostWithUser[]>
 }
