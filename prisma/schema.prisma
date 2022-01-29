@@ -28,7 +28,7 @@ model Post {
   content String
 
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   published DateTime @default(now())
   updated   DateTime @updatedAt
