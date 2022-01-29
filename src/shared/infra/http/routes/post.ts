@@ -10,6 +10,8 @@ import { GetPostController } from '../../../../modules/post/useCases/getPost/Get
 import { GetPostUseCase } from '../../../../modules/post/useCases/getPost/GetPostUseCase'
 import { GetPostsController } from '../../../../modules/post/useCases/getPosts/GetPostsController'
 import { GetPostsUseCase } from '../../../../modules/post/useCases/getPosts/GetPostsUseCase'
+import { PostSearchController } from '../../../../modules/post/useCases/postSearch/PostSearchController'
+import { PostSearchUseCase } from '../../../../modules/post/useCases/postSearch/PostSearchUseCase'
 import { UpdatePostController } from '../../../../modules/post/useCases/updatePost/UpdatePostController'
 import { UpdatePostUseCase } from '../../../../modules/post/useCases/updatePost/UpdatePostUseCase'
 import { expressMiddlewareAdapter } from '../../adapters/expressMiddlewareAdapter'
@@ -52,6 +54,12 @@ const makeUpdatePostController = (prisma: PrismaClient) => {
   return new UpdatePostController(updatePostValidator, updatePostUseCase)
 }
 
+const makePostSearchController = (prisma: PrismaClient) => {
+  const prismaPostRepository = new PrismaPostRepository(prisma)
+  const postSearchUseCase = new PostSearchUseCase(prismaPostRepository)
+  return new PostSearchController(postSearchUseCase)
+}
+
 export const makePostRoutes = (prisma: PrismaClient) => {
   const router = Router()
   router.post('/post',
@@ -62,6 +70,11 @@ export const makePostRoutes = (prisma: PrismaClient) => {
   router.get('/post',
     expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
     expressAuthenticatedRouteAdapter(makeGetPostsController(prisma))
+  )
+
+  router.get('/post/search',
+    expressMiddlewareAdapter(new AuthMidddleware(makeJwtAdapter(), makePrismaUserRepository(prisma))),
+    expressAuthenticatedRouteAdapter(makePostSearchController(prisma))
   )
 
   router.get('/post/:postId',

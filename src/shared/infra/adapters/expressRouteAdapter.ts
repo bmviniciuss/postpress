@@ -32,6 +32,7 @@ export const expressAuthenticatedRouteAdapter: ExpressRouteAdapter = (controller
     const payload: HttpAuthenticatedRequest = {
       params: req?.params ?? {},
       body: req.body,
+      query: req.query,
       authenticatedUser: req.authenticatedUser
     }
 
