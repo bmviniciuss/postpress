@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 
-import { PostRepository, PostRepositoryCreateDTO, PostRepositoryUpdateDTO, PostWithUser } from '../PostRepository'
+import { PostRepository, PostRepositoryCreateDTO, PostRepositoryFindBySearchDTO, PostRepositoryUpdateDTO, PostWithUser } from '../PostRepository'
 
 export class PrismaPostRepository implements PostRepository {
   constructor (private readonly prisma: PrismaClient) {}
@@ -42,6 +42,26 @@ export class PrismaPostRepository implements PostRepository {
       include: {
         user: true
       }
+    })
+  }
+
+  findBySearch (query?: PostRepositoryFindBySearchDTO): Promise<PostWithUser[]> {
+    let where: Prisma.PostWhereInput = {}
+
+    if (query?.searchTerm) {
+      const searchTerm = query.searchTerm
+      where = {
+        ...where,
+        OR: [
+          { title: { contains: searchTerm } },
+          { content: { contains: searchTerm } }
+        ]
+      }
+    }
+
+    return this.prisma.post.findMany({
+      where,
+      include: { user: true }
     })
   }
 }
