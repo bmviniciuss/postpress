@@ -1,5 +1,5 @@
 ## :rocket: Como executar o projeto em modo **desenvolvimento**
-Para rodar a aplicação em modo desenvlvimento é necessário ter intalado em sua máquina o Node, NPM, Docker e Docker Compose (ou postgres instalado e rodando).
+Para rodar a aplicação em modo desenvolvimento é necessário ter instalado em sua máquina o Node, NPM, Docker e Docker Compose (ou postgres instalado e rodando).
 
 ### 1. Clonar repositório
 Clonar o repositório
@@ -18,9 +18,9 @@ POSTGRES_PASSWORD='password'
 JWT_SECRET="super secret pass"
 SALT_NUMBER=10
 ```
-Obs: Como é um aqruivo de desenvolvimento local, observar que o endereço do banco é `localhost:15432` e não `db` como o .env de produção mostrado acima.
+Obs.: Como é um arquivo de desenvolvimento local, observar que o endereço do banco é `localhost:15432` e não `db` como o .env de produção mostrado acima.
 
-### 3. Instalar dependencias
+### 3. Instalar dependências
 ```bash
 npm install
 ```
@@ -31,7 +31,7 @@ Para inicializar o banco de dados de desenvolvimento:
 npm run dev:db:up
 ```
 
-Obs: Caso deseje desligar o banco de dados de produção executar o seguinte comando:
+Obs.: Caso deseje desligar o banco de dados de produção executar o seguinte comando:
 
 ```bash
 npm run dev:db:down

@@ -9,7 +9,7 @@ git clone https://github.com/bmviniciuss/postpress
 ```
 
 ### 2. Definir variáveis de ambiente
-Criar um arquivo .env na raiz do projeto com o conteudo a seguir:
+Criar um arquivo .env na raiz do projeto com o conteúdo a seguir:
 ```bash
 DATABASE_URL="postgresql://postpress-db-user:postpress-db-password@db/postpress?schema=public"
 POSTGRES_USER="postpress-db-user"
