@@ -1,7 +1,16 @@
-# Postpress
-## A Blogging API
+<h1 align="center">
+  Postpress
+</h1>
+<h3 align="center">Uma api de blogging construída utilizando Typescript, Prisma, Postgres e TDD. </h3>
+
+
+<div align="center">
+
+[![Github Status](https://github.com/bmviniciuss/postpress/workflows/CI/badge.svg)]()
 
 [![Coverage Status](https://coveralls.io/repos/github/bmviniciuss/postpress/badge.svg?branch=main)](https://coveralls.io/github/bmviniciuss/postpress?branch=main)
+
+</div>
 
 - :toolbox: Executando Projeto
   - [Desenvolvimento](./docs/installation-dev.md)
