@@ -16,15 +16,15 @@
 - :toolbox: Executando Projeto
   - [Desenvolvimento](./docs/installation-dev.md)
   - [Produção](./docs/installation-prod.md)
-- [:sparkles: Features](#sparkles--features)
-- [:gear: Sobre Desenvolvimento](#-gear--sobre-desenvolvimento)
-- [:test_tube: Testes](#-test-tube--testes)
-  - [Execução de testes](#execu--o-de-testes)
-    - [Unitários](#unit-rios)
-    - [Integração](#integra--o)
+- [:sparkles: Features](#sparkles-features)
+- [:gear: Sobre Desenvolvimento](#gear-sobre-desenvolvimento)
+- [:test_tube: Testes](#test_tube-testes)
+  - [Execução de testes](#execução-de-testes)
+    - [Unitários](#unitários)
+    - [Integração](#integração)
     - [Coverage report](#coverage-report)
 
-## sparkles: Features
+## :sparkles: Features
 - [x] Documentação via Swagger na rota `/docs`.
 - [x] User
   - [x] Cadastro de usuário `POST /user`
