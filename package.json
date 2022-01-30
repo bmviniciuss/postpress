@@ -1,7 +1,7 @@
 {
   "name": "postpress",
   "version": "1.1.0",
-  "description": "1. [Database](./docs/database.md) 2. Routes    1. [User](./docs/user-routes.md)",
+  "description": "Blogging api",
   "main": "index.js",
   "directories": {
     "doc": "docs"
@@ -9,20 +9,33 @@
   "scripts": {
     "prebuild": "rimraf ./dist",
     "build": "tsc",
-    "start:migrate:prod": "prisma migrate deploy && npm run prod:run",
-    "prod:run": "node dist/index.js",
-    "dev:run": "nodemon --config nodemon.json src/index.ts",
+    
     "lint": "eslint 'src/**' --quiet",
     "lint:fix": "eslint 'src/**' --quiet --fix",
     "lint:staged": "lint-staged",
+    
     "husky:prepare": "husky install",
+    
+    "prisma:migrate":"npx prisma migrate deploy",
+    "prisma:generate":"npx prisma generate",
+    "prisma:studio":"npx prisma studio",
+
+    "prod:app:run": "prisma migrate deploy && node dist/index.js",
+    "prod:start": "docker-compose -f docker-compose.yml up",
+
+    "dev:db:up": "docker-compose -f docker-compose.dev.yml up -d",
+    "dev:db:down": "docker-compose -f docker-compose.dev.yml down",
+    "dev:app:run": "nodemon --config nodemon.json src/index.ts",
+
     "test": "jest --passWithNoTests --runInBand --no-cache",
     "test:unit": "npm run test -- --watch -c ./jest-unit.config.js ",
     "test:docker:up": "docker-compose --env-file ./.env.test -f ./tests/docker-compose.yml up -d",
     "test:docker:down": "docker-compose -f ./tests/docker-compose.yml down",
-    "test:prepare:integration": "dotenv -e .env.test -- npx prisma migrate deploy",
+
+    "test:integration:setup": "dotenv -e .env.test -- npx prisma migrate deploy",
     "test:integration": "npm run test:prepare:integration && dotenv -e .env.test -- npm run test -- -c ./jest-integration.config.js",
-    "test:ci": "npx prisma migrate deploy && npx prisma generate && npm run test -- --coverage",
+
+    "test:ci": "npm run prisma:migrate && npm run prisma:generate && npm run test -- --coverage",
     "test:ci:local": "dotenv -e .env.test -- npm run test -- --coverage"
   },
   "repository": {
