@@ -107,7 +107,7 @@ aplicará as migrations no banco de dados e executará todos os testes e irá ge
 e por fim desliga a instância do banco de teste.
 
 ---
-Feito com :red_heart: por Vinicius Barbosa :wave: [Entre em contato!](https://www.linkedin.com/in/bmviniciuss/)
+Feito com :heart: por Vinicius Barbosa :wave: [Entre em contato!](https://www.linkedin.com/in/bmviniciuss/)
 
 
 
