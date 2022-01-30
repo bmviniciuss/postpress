@@ -1,4 +1,4 @@
-## :rocket::rocket: Como executar o projeto em modo **desenvolvimento**
+## :rocket: Como executar o projeto em modo **desenvolvimento**
 Para rodar a aplicação em modo desenvlvimento é necessário ter intalado em sua máquina o Node, NPM, Docker e Docker Compose (ou postgres instalado e rodando).
 
 ### 1. Clonar repositório
@@ -41,7 +41,7 @@ npm run dev:db:down
 ```
 npm run prisma:migrate
 ```
-Só é necessário rodar o comando de aplicar migrações caso sejam criadas outras ou o banco de desenvolvimento seja resetado.
+:bulb: Só é necessário rodar o comando de aplicar migrações caso sejam criadas outras ou o banco de desenvolvimento seja resetado.
 
 ### 6. Inicializar aplicação
 ```bash
@@ -49,5 +49,3 @@ npm run dev:app:run
 ```
 
 :star: Pronto!
-
----
