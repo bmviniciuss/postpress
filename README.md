@@ -6,7 +6,7 @@
 - :toolbox: Executando Projeto
   - [Desenvolvimento](./docs/installation-dev.md)
   - [Produção](./docs/installation-prod.md)
-- [sparkles: Features](#sparkles--features)
+- [:sparkles: Features](#sparkles--features)
 - [:gear: Sobre Desenvolvimento](#-gear--sobre-desenvolvimento)
 - [:test_tube: Testes](#-test-tube--testes)
   - [Execução de testes](#execu--o-de-testes)
@@ -64,6 +64,8 @@ Para executar em modo `watch`:
 npm run test:unit -- --watch
 ```
 
+---
+
 #### Integração
 Para executar os testes utilizar o seguinte comando:
 ```bash
@@ -82,6 +84,8 @@ Para desligar a instância do banco de dados de teste, rode o comando a seguir:
 ```bash
 npm run test:docker:down
 ```
+
+---
 
 #### Coverage report
 Para executar todos os testes e gerar o coverage report, rode o seguinte comando:
