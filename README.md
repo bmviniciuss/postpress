@@ -5,11 +5,12 @@
 
 
 <div align="center">
-
-[![Github Status](https://github.com/bmviniciuss/postpress/workflows/CI/badge.svg)]()
-
-[![Coverage Status](https://coveralls.io/repos/github/bmviniciuss/postpress/badge.svg?branch=main)](https://coveralls.io/github/bmviniciuss/postpress?branch=main)
-
+  <a href="https://github.com/bmviniciuss/postpress/actions/workflows/ci.yml">
+    <img src="https://github.com/bmviniciuss/postpress/actions/workflows/ci.yml/badge.svg">
+  </a>
+  <a href="https://coveralls.io/github/bmviniciuss/postpress?branch=main">
+    <img src="https://coveralls.io/repos/github/bmviniciuss/postpress/badge.svg?branch=main">
+  </a>
 </div>
 
 - :toolbox: Executando Projeto
