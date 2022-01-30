@@ -443,16 +443,6 @@
         "tags": [
           "Post"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/updatePostInput"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "204": {
             "description": "Post was succefully deleted"
