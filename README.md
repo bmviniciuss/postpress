@@ -13,9 +13,7 @@
   </a>
 </div>
 
-- :toolbox: Executando Projeto
-  - [Desenvolvimento](./docs/installation-dev.md)
-  - [Produção](./docs/installation-prod.md)
+- [:toolbox: Executando Projeto](#toolbox-executando-projeto)
 - [:sparkles: Features](#sparkles-features)
 - [:gear: Sobre Desenvolvimento](#gear-sobre-desenvolvimento)
 - [:test_tube: Testes](#test_tube-testes)
@@ -23,6 +21,10 @@
     - [Unitários](#unitários)
     - [Integração](#integração)
     - [Coverage report](#coverage-report)
+
+## :toolbox: Executando Projeto
+- [Ambiente de Desenvolvimento](./docs/installation-dev.md)
+- [Ambiente de Produção](./docs/installation-prod.md)
 
 ## :sparkles: Features
 - [x] Documentação via Swagger na rota `/docs`.
