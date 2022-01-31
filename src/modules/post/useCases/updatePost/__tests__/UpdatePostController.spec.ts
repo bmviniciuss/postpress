@@ -3,7 +3,7 @@ import { mock } from 'jest-mock-extended'
 
 import presentationPostFactory from '../../../../../../tests/factories/presentationPostFactory'
 import userFactory from '../../../../../../tests/factories/userFactory'
-import { badRequest, notFound, ok, serverError } from '../../../../../shared/infra/http/http'
+import { badRequest, notFound, ok, serverError, unauthorized } from '../../../../../shared/infra/http/http'
 import { Validator } from '../../../../../validation/Validator'
 import { PostErrors } from '../../../shared/PostErrors'
 import { UpdatePost } from '../UpdatePost'
@@ -82,11 +82,11 @@ describe('UpdatePostController', () => {
     })
   })
 
-  it('should return a badRequest with UnauthorizedToUpdatePostError if UpdatePost throws a UnauthorizedToUpdatePostError', async () => {
+  it('should return a unauthorized with UnauthorizedToUpdatePostError if UpdatePost throws a UnauthorizedToUpdatePostError', async () => {
     const { sut, updatePost } = makeSut()
     updatePost.execute.mockRejectedValueOnce(new UpdatePostError.UnauthorizedToUpdatePostError())
     const response = await sut.execute(request)
-    expect(response).toEqual(badRequest(new UpdatePostError.UnauthorizedToUpdatePostError()))
+    expect(response).toEqual(unauthorized(new UpdatePostError.UnauthorizedToUpdatePostError()))
   })
 
   it('should return a notFound if UpdatePost throws a PostNotFoundError', async () => {
