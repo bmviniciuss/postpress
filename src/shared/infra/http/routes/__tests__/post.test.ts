@@ -320,6 +320,32 @@ describe('Post Routes', () => {
       expect(response.body.content).toEqual('content')
       expect(response.body.userId).toEqual(authUser.id)
     })
+
+    it('should return 401 if user user is not the author', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+
+      const post = await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: { id: user.id }
+          }
+        }
+      })
+
+      const response = await request(app)
+        .put(makeUrl(post.id))
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+        .send({ title: 'title', content: 'content' })
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Usuário não autorizado",
+        }
+      `)
+    })
   })
 
   describe('GET /post/search?q=searchTerm', () => {
@@ -471,6 +497,32 @@ describe('Post Routes', () => {
       })
 
       expect(deletedPost).toBeNull()
+    })
+
+    it('should return 401 if user user is not the author', async () => {
+      const user = await prisma.user.create({
+        data: userFactory(1)
+      })
+
+      const post = await prisma.post.create({
+        data: {
+          ...omit(postFactory(1), 'userId'),
+          user: {
+            connect: { id: user.id }
+          }
+        }
+      })
+
+      const response = await request(app)
+        .delete(makeUrl(post.id))
+        .set('authorization', makeBearerToken(authUser.accessToken!))
+        .send()
+      expect(response.statusCode).toEqual(401)
+      expect(response.body).toMatchInlineSnapshot(`
+        Object {
+          "message": "Usuário não autorizado",
+        }
+      `)
     })
   })
 })
